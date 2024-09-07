@@ -2,8 +2,11 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import TitleComponent from "../Components/TitleComponent";
 import DescriptionComponent from "../Components/DescriptionComponent";
+import { useNavigation } from "@react-navigation/native"; // Import the hook for navigation
 
 const Landing = () => {
+  const navigation = useNavigation(); // Use the navigation hook
+
   return (
     <View style={styles.container}>
       <Image
@@ -13,10 +16,10 @@ const Landing = () => {
 
       <Image source={require("../assets/logo.png")} style={styles.logo} />
       <View style={styles.mainContainer}>
-          <Image
-            source={require("../assets/Landing/illustration.png")}
-            style={styles.illustration}
-          />
+        <Image
+          source={require("../assets/Landing/illustration.png")}
+          style={styles.illustration}
+        />
         <View style={styles.subContainer}>
           <View style={styles.cardsContainer}>
             <View style={styles.card}>
@@ -35,9 +38,14 @@ const Landing = () => {
               </TouchableOpacity>
             </View>
           </View>
-          <Text style={styles.loginText}>Login to get the best of our services</Text>
+          <Text style={styles.loginText}>
+            Login to get the best of our services
+          </Text>
 
-          <TouchableOpacity style={styles.loginButton}>
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => navigation.navigate("Login")}
+          >
             <Text style={styles.loginButtonText}>Log in</Text>
           </TouchableOpacity>
         </View>
@@ -61,16 +69,17 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   logo: {
-    width: 100,
-    height: 50,
+    width: 165,
+    height: 60,
     resizeMode: "contain",
     marginTop: 50,
+    marginLeft: 10,
   },
   mainContainer: {
     width: "100%",
-    display:"flex",
-    flex:1,
-    justifyContent:"flex-end",
+    display: "flex",
+    flex: 1,
+    justifyContent: "flex-end",
   },
   illustrationContainer: {
     width: "100%",
@@ -80,8 +89,8 @@ const styles = StyleSheet.create({
   },
   illustration: {
     resizeMode: "contain",
-    marginLeft:"5%",
-    width: "95%",
+    marginLeft: "10%",
+    width: "90%",
     height: "45%",
     marginBottom: 0,
   },
@@ -125,11 +134,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: "auto",
   },
-  loginText:{
+  loginText: {
     color: "#740000",
     fontSize: 12,
     fontWeight: "400",
-    textAlign:"center"
+    textAlign: "center",
   },
   loginButtonText: {
     color: "#fff",
