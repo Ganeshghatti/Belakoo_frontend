@@ -1,13 +1,42 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, ImageBackground } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, ImageBackground, Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native"; // Import useNavigation
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation(); // Initialize useNavigation
+
+  const handleLogin = async () => {
+    navigation.navigate("Campus");
+    // try {
+    //   // Replace with your API endpoint
+    //   const response = await fetch("https://your-api-endpoint.com/login", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ email, password }),
+    //   });
+
+    //   const data = await response.json();
+
+    //   if (response.ok) {
+    //     // Navigate to Campus screen if login is successful
+    //     navigation.navigate("Campus");
+    //   } else {
+    //     // Handle login errors (e.g., invalid credentials)
+    //     Alert.alert("Login Error", data.message || "An error occurred during login.");
+    //   }
+    // } catch (error) {
+    //   // Handle network errors
+    //   Alert.alert("Network Error", "Unable to connect to the server. Please try again.");
+    // }
+  };
 
   return (
     <ImageBackground
-      source={require("../assets/Commonbg.png")} // Replace with the path to your background image
+      source={require("../assets/Login/bg.png")} // Replace with the path to your background image
       style={styles.background}
       resizeMode="cover"
     >
@@ -48,7 +77,7 @@ const Login = () => {
         </TouchableOpacity>
 
         {/* Login Button */}
-        <TouchableOpacity style={styles.loginButton}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Log in</Text>
         </TouchableOpacity>
       </View>
@@ -68,7 +97,7 @@ const styles = StyleSheet.create({
     height: 120,
     resizeMode: "contain",
     marginBottom: 80,
-    marginTop:50
+    marginTop: 50,
   },
   loginContainer: {
     width: "90%", // Slightly adjusted to fit within the screen with padding
@@ -85,15 +114,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "600",
     marginBottom: 10,
-    color:"#4E4949"
+    color: "#4E4949",
   },
   instructionsText: {
     marginBottom: 20,
-    fontSize:16,
-    color:"#4E4949",
-    fontWeight:"400",
-    alignSelf:"stretch",
-    fontStyle:"normal"
+    fontSize: 16,
+    color: "#4E4949",
+    fontWeight: "400",
+    alignSelf: "stretch",
+    fontStyle: "normal",
   },
   input: {
     width: "100%",
@@ -108,14 +137,14 @@ const styles = StyleSheet.create({
   forgotPasswordText: {
     fontSize: 16,
     fontWeight: "400",
-    color:"#4E4949",
+    color: "#4E4949",
     marginBottom: 20,
   },
   loginButton: {
     backgroundColor: "#F56E00",
     paddingVertical: 15,
     borderRadius: 25,
-    width:"100%",
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -123,7 +152,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "400",
-    textAlign:"center"
+    textAlign: "center",
   },
 });
 

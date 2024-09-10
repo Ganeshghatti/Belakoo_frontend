@@ -1,18 +1,18 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 
-const TitleComponent = ({ titleText }) => {
-  return <Text style={styles.title}>{titleText}</Text>;
+const HeadingComponent = ({ headingText }) => {
+  return <Text style={styles.title}>{headingText}</Text>;
 };
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#740000',
     textAlign: 'center',
     fontFamily: 'GothamBold', // Ensure the font name matches exactly
   },
 });
 
-export default TitleComponent;
+export default HeadingComponent;

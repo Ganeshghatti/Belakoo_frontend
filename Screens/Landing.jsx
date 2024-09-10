@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import TitleComponent from "../Components/TitleComponent";
-import DescriptionComponent from "../Components/DescriptionComponent";
+import TitleComponent from "../Components/TextComponents/TitleComponent";
+import DescriptionComponent from "../Components/TextComponents/DescriptionComponent";
 import { useNavigation } from "@react-navigation/native"; // Import the hook for navigation
 
 const Landing = () => {
