@@ -25,18 +25,16 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 10,
-    fontFamily: 'Gotham', // Ensure Gotham font is available
     fontStyle: 'normal',
     fontWeight: '400',
-    lineHeight: 12, // 120% of font size 10px is 12px
+    lineHeight: 12, 
     color: '#740000',
   },
   separator: {
     fontSize: 10,
-    fontFamily: 'Gotham', // Ensure Gotham font is available
     fontStyle: 'normal',
     fontWeight: '400',
-    lineHeight: 12, // 120% of font size 10px is 12px
+    lineHeight: 12, 
     color: '#740000',
   },
 });

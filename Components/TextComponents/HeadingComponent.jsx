@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#740000',
     textAlign: 'center',
-    fontFamily: 'GothamBold', // Ensure the font name matches exactly
   },
 });
 

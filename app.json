@@ -24,16 +24,7 @@
     "web": {
       "favicon": "./assets/customfavicon.png"
     },
-    "plugins": [
-      [
-        "expo-font",
-        {
-          "fonts": [
-            "./assets/fonts/GothamBold.ttf"
-          ]
-        }
-      ]
-    ],
+    "plugins": ["expo-font"],
     "extra": {
       "eas": {
         "projectId": "ff4647f1-1086-4d00-a1dc-66312068abde"
