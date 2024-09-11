@@ -3,6 +3,8 @@ import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import CustomHeader from "../Components/CustomHeader";
 import TitleContainer from "../Components/TitleContainer";
+import DoneIcon from "../assets/icons/Done";
+import NotDoneIcon from "../assets/icons/NotDone";
 
 const Chapters = () => {
   const route = useRoute();
@@ -11,19 +13,95 @@ const Chapters = () => {
 
   // Full fake data for 9 chapters with levels
   const [chapters, setChapters] = useState([
-    { id: "1", title: "Ch 1", levels: [{ id: 1, completed: false }, { id: 2, completed: true }, { id: 3, completed: false }] },
-    { id: "2", title: "Ch 2", levels: [{ id: 1, completed: false }, { id: 2, completed: false }, { id: 3, completed: true }] },
-    { id: "3", title: "Ch 3", levels: [{ id: 1, completed: true }, { id: 2, completed: false }, { id: 3, completed: false }] },
-    { id: "4", title: "Ch 4", levels: [{ id: 1, completed: false }, { id: 2, completed: false }, { id: 3, completed: false }] },
-    { id: "5", title: "Ch 5", levels: [{ id: 1, completed: true }, { id: 2, completed: true }, { id: 3, completed: false }] },
-    { id: "6", title: "Ch 6", levels: [{ id: 1, completed: false }, { id: 2, completed: true }, { id: 3, completed: true }] },
-    { id: "7", title: "Ch 7", levels: [{ id: 1, completed: false }, { id: 2, completed: false }, { id: 3, completed: false }] },
-    { id: "8", title: "Ch 8", levels: [{ id: 1, completed: true }, { id: 2, completed: false }, { id: 3, completed: true }] },
-    { id: "9", title: "Ch 9", levels: [{ id: 1, completed: true }, { id: 2, completed: true }, { id: 3, completed: true }] },
+    {
+      id: "1",
+      title: "Ch 1",
+      levels: [
+        { id: 1, completed: false },
+        { id: 2, completed: true },
+        { id: 3, completed: false },
+      ],
+    },
+    {
+      id: "2",
+      title: "Ch 2",
+      levels: [
+        { id: 1, completed: false },
+        { id: 2, completed: false },
+        { id: 3, completed: true },
+      ],
+    },
+    {
+      id: "3",
+      title: "Ch 3",
+      levels: [
+        { id: 1, completed: true },
+        { id: 2, completed: false },
+        { id: 3, completed: false },
+      ],
+    },
+    {
+      id: "4",
+      title: "Ch 4",
+      levels: [
+        { id: 1, completed: false },
+        { id: 2, completed: false },
+        { id: 3, completed: false },
+      ],
+    },
+    {
+      id: "5",
+      title: "Ch 5",
+      levels: [
+        { id: 1, completed: true },
+        { id: 2, completed: true },
+        { id: 3, completed: false },
+      ],
+    },
+    {
+      id: "6",
+      title: "Ch 6",
+      levels: [
+        { id: 1, completed: false },
+        { id: 2, completed: true },
+        { id: 3, completed: true },
+      ],
+    },
+    {
+      id: "7",
+      title: "Ch 7",
+      levels: [
+        { id: 1, completed: false },
+        { id: 2, completed: false },
+        { id: 3, completed: false },
+      ],
+    },
+    {
+      id: "8",
+      title: "Ch 8",
+      levels: [
+        { id: 1, completed: true },
+        { id: 2, completed: false },
+        { id: 3, completed: true },
+      ],
+    },
+    {
+      id: "9",
+      title: "Ch 9",
+      levels: [
+        { id: 1, completed: true },
+        { id: 2, completed: true },
+        { id: 3, completed: true },
+      ],
+    },
   ]);
 
   const selectLevel = (chapter, level) => {
-    navigation.navigate("Content", { chapterId: chapter.id, chapterTitle: chapter.title, level });
+    navigation.navigate("Content", {
+      chapterId: chapter.id,
+      chapterTitle: chapter.title,
+      level,
+    });
   };
 
   return (
@@ -37,6 +115,7 @@ const Chapters = () => {
         title={chapterName}
         subtitle="Select chapters and levels"
       />
+
       <View style={styles.chapterContainer}>
         {chapters.map((chapter) => (
           <View key={chapter.id} style={styles.chapterCard}>
@@ -49,7 +128,7 @@ const Chapters = () => {
                   onPress={() => selectLevel(chapter, level.id)}
                 >
                   <View style={styles.levelContent}>
-                    <View style={[styles.checkbox, level.completed && styles.checkboxChecked]} />
+                    {level.completed ? <DoneIcon /> : <NotDoneIcon />}
                     <Text style={styles.levelText}>Level {level.id}</Text>
                   </View>
                 </TouchableOpacity>
@@ -98,7 +177,7 @@ const styles = StyleSheet.create({
     rowGap: 25,
     backgroundColor: "white",
     paddingVertical: 15,
-    borderRadius: 5
+    borderRadius: 5,
   },
   chapterCard: {
     display: "flex",
@@ -120,7 +199,7 @@ const styles = StyleSheet.create({
   levelContent: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop:1
+    marginTop: 1,
   },
   checkbox: {
     width: 20,
@@ -137,6 +216,7 @@ const styles = StyleSheet.create({
     color: "#740000",
     fontWeight: "400",
     fontSize: 14,
+    marginLeft:2
   },
 });
 

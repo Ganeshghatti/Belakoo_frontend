@@ -1,5 +1,5 @@
 import React from "react";
-import 'react-native-gesture-handler';
+import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Landing from "./Screens/Landing";
@@ -8,10 +8,27 @@ import Campus from "./Screens/Campus";
 import Subjects from "./Screens/Subjects";
 import Chapters from "./Screens/Chapters";
 import Content from "./Screens/Content";
+// import { useFonts } from "expo-font";
+// import * as SplashScreen from "expo-splash-screen";
+// import { useEffect } from "react";
 
+// SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator();
 
 export default function App() {
+  // const [loaded, error] = useFonts({
+  //   'NerkoOne': require("./assets/fonts/NerkoOne.ttf"),
+  // });
+
+  // useEffect(() => {
+  //   if (loaded || error) {
+  //     SplashScreen.hideAsync();
+  //   }
+  // }, [loaded, error]);
+
+  // if (!loaded && !error) {
+  //   return null;
+  // }
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Landing">

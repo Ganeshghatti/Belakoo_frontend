@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import React from "react";
+import { Text, StyleSheet } from "react-native";
 
 const TitleComponent = ({ titleText }) => {
   return <Text style={styles.title}>{titleText}</Text>;
@@ -8,9 +8,10 @@ const TitleComponent = ({ titleText }) => {
 const styles = StyleSheet.create({
   title: {
     fontSize: 20,
-    fontWeight: '700',
-    color: '#740000',
-    textAlign: 'center',
+    fontWeight: "700",
+    color: "#740000",
+    textAlign: "center",
+    // fontFamily: "GothamBold",
   },
 });
 
