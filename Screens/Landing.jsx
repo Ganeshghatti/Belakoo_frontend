@@ -3,58 +3,65 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import TitleComponent from "../Components/TextComponents/TitleComponent";
 import DescriptionComponent from "../Components/TextComponents/DescriptionComponent";
 import { useNavigation } from "@react-navigation/native"; // Import the hook for navigation
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Landing = () => {
   const navigation = useNavigation(); // Use the navigation hook
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={require("../assets/Landing/bg.png")}
-        style={styles.backgroundImage}
-      />
-
-      <Image source={require("../assets/logo.png")} style={styles.logo} />
-      <View style={styles.mainContainer}>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
         <Image
-          source={require("../assets/Landing/illustration.png")}
-          style={styles.illustration}
+          source={require("../assets/Landing/bg.png")}
+          style={styles.backgroundImage}
         />
-        <View style={styles.subContainer}>
-          <View style={styles.cardsContainer}>
-            <View style={styles.card}>
-              <TitleComponent titleText="What" />
-              <DescriptionComponent descriptionText="Lorem ipsum dolor sit amet. Et inventore illum quo veniam illum quo fugiat nostrum eos nemo veritatis pariatur" />
-              <TouchableOpacity>
-                <Text style={styles.cardLink}>Know More</Text>
-              </TouchableOpacity>
-            </View>
 
-            <View style={styles.card}>
-              <TitleComponent titleText="What" />
-              <DescriptionComponent descriptionText="Another description goes here for the second card." />
-              <TouchableOpacity>
-                <Text style={styles.cardLink}>Know More</Text>
-              </TouchableOpacity>
+        <Image source={require("../assets/logo.png")} style={styles.logo} />
+        <View style={styles.mainContainer}>
+          <Image
+            source={require("../assets/Landing/illustration.png")}
+            style={styles.illustration}
+          />
+          <View style={styles.subContainer}>
+            <View style={styles.cardsContainer}>
+              <View style={styles.card}>
+                <TitleComponent titleText="What" />
+                <DescriptionComponent descriptionText="Lorem ipsum dolor sit amet. Et inventore illum quo veniam illum quo fugiat nostrum eos nemo veritatis pariatur" />
+                <TouchableOpacity>
+                  <Text style={styles.cardLink}>Know More</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.card}>
+                <TitleComponent titleText="What" />
+                <DescriptionComponent descriptionText="Another description goes here for the second card." />
+                <TouchableOpacity>
+                  <Text style={styles.cardLink}>Know More</Text>
+                </TouchableOpacity>
+              </View>
             </View>
+            <Text style={styles.loginText}>
+              Login to get the best of our services
+            </Text>
+
+            <TouchableOpacity
+              style={styles.loginButton}
+              onPress={() => navigation.navigate("Login")}
+            >
+              <Text style={styles.loginButtonText}>Log in</Text>
+            </TouchableOpacity>
           </View>
-          <Text style={styles.loginText}>
-            Login to get the best of our services
-          </Text>
-
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => navigation.navigate("Login")}
-          >
-            <Text style={styles.loginButtonText}>Log in</Text>
-          </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "red", // You can set this if you want a specific color or leave it transparent
+  },
   container: {
     flex: 1,
     width: "100%",
@@ -79,12 +86,6 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flex: 1,
-    justifyContent: "flex-end",
-  },
-  illustrationContainer: {
-    width: "100%",
-    display: "flex",
-    alignItems: "flex-end",
     justifyContent: "flex-end",
   },
   illustration: {

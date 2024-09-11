@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Image } from "react-native";
-// import { WebView } from 'react-native-webview';
+import { WebView } from "react-native-webview";
 import CustomHeader from "../Components/CustomHeader";
 import { useRoute } from "@react-navigation/native";
 
@@ -19,11 +19,11 @@ const Content = () => {
       />
       <CustomHeader />
       <View style={styles.contentContainer}>
-        {/* <WebView
+        <WebView
           source={{ uri: pdfUrl }}
           style={styles.webview}
-        //   scalesPageToFit={true}  // Ensures the PDF scales to fit the WebView
-        /> */}
+          scalesPageToFit={true} // Ensures the PDF scales to fit the WebView
+        />
       </View>
     </View>
   );

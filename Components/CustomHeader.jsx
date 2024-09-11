@@ -35,7 +35,7 @@ const CustomHeader = () => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
         <Image source={require("../assets/logo.png")} style={styles.logo} />
         <Breadcrumbs items={getBreadcrumbItems()} onNavigate={handleNavigate} />
@@ -45,16 +45,17 @@ const CustomHeader = () => {
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    backgroundColor: "transparent", // Set background to transparent
+  },
   header: {
     width: "100%",
     display: "flex",
     backgroundColor: "transparent",
-    paddingHorizontal:10,
-    paddingVertical:6
+    paddingHorizontal: 10,
+    paddingVertical: 6,
   },
-  logo: {
-
-  },
+  logo: {},
 });
 
 export default CustomHeader;
