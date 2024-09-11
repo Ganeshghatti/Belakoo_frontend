@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Canvas, useLoader, useFrame } from "@react-three/fiber/native";
+import { Canvas, useLoader } from "@react-three/fiber/native";
 import { OrbitControls } from "@react-three/drei";
 import { useNavigation } from "@react-navigation/native";
 import { View, StyleSheet } from "react-native";
@@ -46,18 +46,9 @@ const CubeComponent = () => {
     }
   };
 
-  // Rotate the cube in x, y, and z axes using the useFrame hook
-  useFrame(() => {
-    if (mesh.current) {
-      mesh.current.rotation.x += 0.002;
-      mesh.current.rotation.y += 0.002;
-      mesh.current.rotation.z += 0.002;
-    }
-  });
-
   return (
     <mesh ref={mesh} onClick={handleFaceClick}>
-      <boxGeometry args={[2.5, 2.5, 2.5]} />
+      <boxGeometry args={[2.75, 2.75, 2.75]} />
       <meshStandardMaterial map={texture_1} attach="material-0" />
       <meshStandardMaterial map={texture_2} attach="material-1" />
       <meshStandardMaterial map={texture_3} attach="material-2" />
@@ -74,7 +65,13 @@ const Cube = () => {
       <Canvas style={styles.canvas}>
         <ambientLight />
         <directionalLight position={[2, 1, 1]} />
-        <OrbitControls enableZoom={false} enableDamping={false} />
+        {/* Updated OrbitControls to disable movement */}
+        <OrbitControls
+          enableZoom={false} // Disable zoom
+          enablePan={false} // Disable panning
+          enableDamping={false} // Disable damping for smoother control
+          rotateSpeed={1.0} // You can adjust the rotation speed if needed
+        />
         <CubeComponent />
       </Canvas>
     </View>
