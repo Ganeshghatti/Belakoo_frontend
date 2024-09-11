@@ -1,4 +1,5 @@
 import React from "react";
+import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Landing from "./Screens/Landing";
@@ -6,7 +7,6 @@ import Login from "./Screens/Login";
 import Campus from "./Screens/Campus";
 import Subjects from "./Screens/Subjects";
 import Chapters from "./Screens/Chapters";
-import CustomHeader from "./Components/CustomHeader";
 import Content from "./Screens/Content";
 
 const Stack = createStackNavigator();
