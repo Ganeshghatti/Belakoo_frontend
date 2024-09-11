@@ -4,7 +4,7 @@
     "slug": "Belakoo",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/customicon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splashcustom.png",
@@ -16,13 +16,13 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/customadaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.ganeshghattitest.Belakoo"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/customfavicon.png"
     },
     "plugins": [
       [

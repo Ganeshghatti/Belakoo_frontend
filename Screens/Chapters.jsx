@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
   levelContent: {
     flexDirection: "row",
     alignItems: "center",
+    marginTop:1
   },
   checkbox: {
     width: 20,
