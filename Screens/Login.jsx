@@ -1,37 +1,86 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, ImageBackground, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ImageBackground,
+  Image,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation
+import Toast from 'react-native-toast-message';
+import authService from '../services/authService';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation(); // Initialize useNavigation
 
+  const validateInputs = () => {
+    if (!email.trim()) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Please enter your email',
+      });
+      return false;
+    }
+    if (!password.trim()) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Please enter your password',
+      });
+      return false;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Please enter a valid email address',
+      });
+      return false;
+    }
+    return true;
+  };
+
   const handleLogin = async () => {
-    navigation.navigate("Campus");
-    // try {
-    //   // Replace with your API endpoint
-    //   const response = await fetch("https://your-api-endpoint.com/login", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ email, password }),
-    //   });
+    if (!validateInputs()) return;
 
-    //   const data = await response.json();
-
-    //   if (response.ok) {
-    //     // Navigate to Campus screen if login is successful
-    //     navigation.navigate("Campus");
-    //   } else {
-    //     // Handle login errors (e.g., invalid credentials)
-    //     Alert.alert("Login Error", data.message || "An error occurred during login.");
-    //   }
-    // } catch (error) {
-    //   // Handle network errors
-    //   Alert.alert("Network Error", "Unable to connect to the server. Please try again.");
-    // }
+    setIsLoading(true);
+    try {
+      await authService.login(email, password);
+      navigation.navigate("Campus");
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        Toast.show({
+          type: 'error',
+          text1: 'Login Error',
+          text2: error.response.data.msg || "An error occurred during login.",
+        });
+      } else if (error.request) {
+        // The request was made but no response was received
+        Toast.show({
+          type: 'error',
+          text1: 'Network Error',
+          text2: "Unable to connect to the server. Please try again.",
+        });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: "An unexpected error occurred.",
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -77,10 +126,15 @@ const Login = () => {
         </TouchableOpacity>
 
         {/* Login Button */}
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <Text style={styles.loginButtonText}>Log in</Text>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin} disabled={isLoading}>
+          {isLoading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.loginButtonText}>Log in</Text>
+          )}
         </TouchableOpacity>
       </View>
+      <Toast />
     </ImageBackground>
   );
 };

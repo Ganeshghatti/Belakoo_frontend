@@ -6,10 +6,7 @@ import { useRoute } from "@react-navigation/native";
 
 const Content = () => {
   const route = useRoute();
-  const { chapterId, level } = route.params;
-
-  // Use Google Docs Viewer to embed the PDF inline
-  const pdfUrl = `https://docs.google.com/gview?embedded=true&url=https://firebasestorage.googleapis.com/v0/b/belakoo-52465.appspot.com/o/BelakooTest.pdf?alt=media&token=d04991a2-d761-4818-9380-8a0839bf049a`;
+  const { chapterId, chapterTitle, level } = route.params;
 
   return (
     <View style={styles.container}>
@@ -20,7 +17,7 @@ const Content = () => {
       <CustomHeader />
       <View style={styles.contentContainer}>
         <WebView
-          source={{ uri: pdfUrl }}
+          source={{ uri: level.pdflink }}
           style={styles.webview}
           scalesPageToFit={true} // Ensures the PDF scales to fit the WebView
         />

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CampusIconSvg from "../assets/icons/CampusIconSvg";
@@ -13,12 +13,36 @@ import DescriptionComponent from "../Components/TextComponents/DescriptionCompon
 import HeadingComponent from "../Components/TextComponents/HeadingComponent";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomHeader from "../Components/CustomHeader";
+import api from '../services/api';
+import Toast from 'react-native-toast-message';
 
 const Campus = () => {
   const navigation = useNavigation();
+  const [campuses, setCampuses] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleNavigate = (campusName) => {
-    navigation.navigate("Subjects", { campusName });
+  useEffect(() => {
+    fetchCampuses();
+  }, []);
+
+  const fetchCampuses = async () => {
+    try {
+      const response = await api.get('/api/campuses/');
+      setCampuses(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching campuses:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to load campuses. Please try again.',
+      });
+      setIsLoading(false);
+    }
+  };
+
+  const handleNavigate = (campusId) => {
+    navigation.navigate("Subjects", { campusId });
   };
 
   return (
@@ -30,30 +54,26 @@ const Campus = () => {
       <View style={styles.wrapper}>
         <View style={styles.campusContainer}>
           <HeadingComponent headingText="Choose your campus" />
-          <View style={styles.cardContainer}>
-            <TouchableOpacity
-              style={styles.campusCard}
-              onPress={() => handleNavigate("Campus1")}
-            >
-              <TitleComponent titleText="Campus 1" />
-              <CampusIconSvg />
-              <DescriptionComponent
-                descriptionText="Lorem ipsum dolor sit amet. Et inventore illum quo veniam illum quo fugiat nostrum eos nemo veritatis pariatur"
-                style={{ textAlign: "center" }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.campusCard}
-              onPress={() => handleNavigate("Campus2")}
-            >
-              <TitleComponent titleText="Campus 2" />
-              <CampusIconSvg />
-              <DescriptionComponent
-                descriptionText="Lorem ipsum dolor sit amet. Et inventore illum quo veniam illum quo fugiat nostrum eos nemo veritatis pariatur"
-                style={{ textAlign: "center" }}
-              />
-            </TouchableOpacity>
-          </View>
+          {isLoading ? (
+            <ActivityIndicator size="large" color="#740000" />
+          ) : (
+            <View style={styles.cardContainer}>
+              {campuses.map((campus) => (
+                <TouchableOpacity
+                  key={campus.id}
+                  style={styles.campusCard}
+                  onPress={() => handleNavigate(campus.id)}
+                >
+                  <TitleComponent titleText={campus.name} />
+                  <CampusIconSvg />
+                  <DescriptionComponent
+                    descriptionText={campus.description}
+                    style={{ textAlign: "center" }}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
         </View>
       </View>
     </ImageBackground>

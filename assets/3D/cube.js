@@ -1,78 +1,106 @@
-import React, { useRef } from "react";
+import React, { useRef, useMemo } from "react";
 import { Canvas, useLoader } from "@react-three/fiber/native";
 import { OrbitControls } from "@react-three/drei";
 import { useNavigation } from "@react-navigation/native";
 import { View, StyleSheet } from "react-native";
 import { TextureLoader } from "three";
 
-const CubeComponent = () => {
+// Function to convert Google Drive link to direct image link
+const getDirectImageUrl = (driveUrl) => {
+  const fileId = driveUrl.match(/[-\w]{25,}/);
+  return fileId 
+    ? `https://drive.google.com/uc?export=view&id=${fileId[0]}`
+    : driveUrl;
+};
+
+const CubeComponent = ({ subjects = [] }) => {
   const navigation = useNavigation();
   const mesh = useRef(null);
 
   // Load textures for cube faces
-  const texture_1 = useLoader(TextureLoader, require("./face1.png"));
-  const texture_2 = useLoader(TextureLoader, require("./face2.png"));
-  const texture_3 = useLoader(TextureLoader, require("./face3.png"));
-  const texture_4 = useLoader(TextureLoader, require("./face4.png"));
-  const texture_5 = useLoader(TextureLoader, require("./face5.png"));
-  const texture_6 = useLoader(TextureLoader, require("./face6.png"));
+  const defaultTexture = useMemo(() => {
+    try {
+      return new TextureLoader().load(
+        require("./defaultface.png"),
+        undefined,
+        undefined,
+        (error) => console.error("Error loading default texture:", error)
+      );
+    } catch (error) {
+      console.error("Error creating default texture:", error);
+      return null;
+    }
+  }, []);
+
+  const textures = useMemo(() => {
+    const loadedTextures = subjects.map((subject, index) => {
+      try {
+        const directUrl = getDirectImageUrl(subject.icon);
+        return new TextureLoader().load(
+          directUrl,
+          (texture) => console.log(`Texture ${index} loaded successfully`),
+          undefined,
+          (error) => console.error(`Error loading texture ${index}:`, error)
+        );
+      } catch (error) {
+        console.error(`Error creating texture ${index}:`, error);
+        return defaultTexture;
+      }
+    });
+
+    console.log(`Loaded ${loadedTextures.length} textures`);
+
+    while (loadedTextures.length < 6) {
+      loadedTextures.push(defaultTexture);
+    }
+
+    return loadedTextures;
+  }, [subjects, defaultTexture]);
 
   // Handle face click by detecting which face was clicked
   const handleFaceClick = (event) => {
     const intersection = event.intersections[0];
-    const faceIndex = intersection.face.materialIndex; // Get material index (face clicked)
+    const faceIndex = intersection.face.materialIndex;
 
-    switch (faceIndex) {
-      case 0:
-        navigation.navigate("Chapters", { chapterName: "Math" });
-        break;
-      case 1:
-        navigation.navigate("Chapters", { chapterName: "Science" });
-        break;
-      case 2:
-        navigation.navigate("Chapters", { chapterName: "English" });
-        break;
-      case 3:
-        navigation.navigate("Chapters", { chapterName: "History" });
-        break;
-      case 4:
-        navigation.navigate("Chapters", { chapterName: "Geography" });
-        break;
-      case 5:
-        navigation.navigate("Chapters", { chapterName: "Art" });
-        break;
-      default:
-        break;
+    if (faceIndex < subjects.length) {
+      const selectedSubject = subjects[faceIndex];
+      navigation.navigate("Chapters", {
+        subjectId: selectedSubject.id,
+        subjectName: selectedSubject.name,
+      });
     }
   };
 
   return (
     <mesh ref={mesh} onClick={handleFaceClick}>
       <boxGeometry args={[2.75, 2.75, 2.75]} />
-      <meshStandardMaterial map={texture_1} attach="material-0" />
-      <meshStandardMaterial map={texture_2} attach="material-1" />
-      <meshStandardMaterial map={texture_3} attach="material-2" />
-      <meshStandardMaterial map={texture_4} attach="material-3" />
-      <meshStandardMaterial map={texture_5} attach="material-4" />
-      <meshStandardMaterial map={texture_6} attach="material-5" />
+      {textures.map((texture, index) => (
+        <meshStandardMaterial
+          key={index}
+          map={texture}
+          attach={`material-${index}`}
+          color={texture ? undefined : 'red'} // Fallback color if texture fails to load
+        />
+      ))}
     </mesh>
   );
 };
 
-const Cube = () => {
+const Cube = ({ subjects }) => {
+  console.log("Subjects received in Cube:", subjects);
+
   return (
     <View style={styles.container}>
       <Canvas style={styles.canvas}>
-        <ambientLight />
-        <directionalLight position={[2, 1, 1]} />
-        {/* Updated OrbitControls to disable movement */}
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[5, 5, 5]} intensity={1} />
         <OrbitControls
-          enableZoom={false} // Disable zoom
-          enablePan={false} // Disable panning
-          enableDamping={false} // Disable damping for smoother control
-          rotateSpeed={1.0} // You can adjust the rotation speed if needed
+          enableZoom={false}
+          enablePan={false}
+          enableDamping={false}
+          rotateSpeed={1.0}
         />
-        <CubeComponent />
+        <CubeComponent subjects={subjects} />
       </Canvas>
     </View>
   );

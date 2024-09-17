@@ -1,106 +1,45 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Image, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 import CustomHeader from "../Components/CustomHeader";
 import TitleContainer from "../Components/TitleContainer";
 import DoneIcon from "../assets/icons/Done";
 import NotDoneIcon from "../assets/icons/NotDone";
+import api from '../services/api';
+import Toast from 'react-native-toast-message';
 
 const Chapters = () => {
   const route = useRoute();
-  const { chapterName } = route.params;
   const navigation = useNavigation();
+  const { subjectId, subjectName } = route.params;
+  const [chapters, setChapters] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Full fake data for 9 chapters with levels
-  const [chapters, setChapters] = useState([
-    {
-      id: "1",
-      title: "Ch 1",
-      levels: [
-        { id: 1, completed: false },
-        { id: 2, completed: true },
-        { id: 3, completed: false },
-      ],
-    },
-    {
-      id: "2",
-      title: "Ch 2",
-      levels: [
-        { id: 1, completed: false },
-        { id: 2, completed: false },
-        { id: 3, completed: true },
-      ],
-    },
-    {
-      id: "3",
-      title: "Ch 3",
-      levels: [
-        { id: 1, completed: true },
-        { id: 2, completed: false },
-        { id: 3, completed: false },
-      ],
-    },
-    {
-      id: "4",
-      title: "Ch 4",
-      levels: [
-        { id: 1, completed: false },
-        { id: 2, completed: false },
-        { id: 3, completed: false },
-      ],
-    },
-    {
-      id: "5",
-      title: "Ch 5",
-      levels: [
-        { id: 1, completed: true },
-        { id: 2, completed: true },
-        { id: 3, completed: false },
-      ],
-    },
-    {
-      id: "6",
-      title: "Ch 6",
-      levels: [
-        { id: 1, completed: false },
-        { id: 2, completed: true },
-        { id: 3, completed: true },
-      ],
-    },
-    {
-      id: "7",
-      title: "Ch 7",
-      levels: [
-        { id: 1, completed: false },
-        { id: 2, completed: false },
-        { id: 3, completed: false },
-      ],
-    },
-    {
-      id: "8",
-      title: "Ch 8",
-      levels: [
-        { id: 1, completed: true },
-        { id: 2, completed: false },
-        { id: 3, completed: true },
-      ],
-    },
-    {
-      id: "9",
-      title: "Ch 9",
-      levels: [
-        { id: 1, completed: true },
-        { id: 2, completed: true },
-        { id: 3, completed: true },
-      ],
-    },
-  ]);
+  useEffect(() => {
+    fetchSubjectDetails();
+  }, []);
+
+  const fetchSubjectDetails = async () => {
+    try {
+      const response = await api.get(`/api/subjects/${subjectId}/`);
+      setChapters(response.data.chapters);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching subject details:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to load chapters. Please try again.',
+      });
+      setIsLoading(false);
+    }
+  };
 
   const selectLevel = (chapter, level) => {
     navigation.navigate("Content", {
       chapterId: chapter.id,
       chapterTitle: chapter.title,
-      level,
+      level: level,
     });
   };
 
@@ -112,41 +51,40 @@ const Chapters = () => {
       />
       <CustomHeader />
       <TitleContainer
-        title={chapterName}
+        title={subjectName}
         subtitle="Select chapters and levels"
       />
 
-      <View style={styles.chapterContainer}>
-        {chapters.map((chapter) => (
-          <View key={chapter.id} style={styles.chapterCard}>
-            <Text style={styles.chapterTitle}>{chapter.title}</Text>
-            <View style={styles.levelContainer}>
-              {chapter.levels.map((level) => (
-                <TouchableOpacity
-                  key={level.id}
-                  style={styles.levelButton}
-                  onPress={() => selectLevel(chapter, level.id)}
-                >
-                  <View style={styles.levelContent}>
-                    {level.completed ? <DoneIcon /> : <NotDoneIcon />}
-                    <Text style={styles.levelText}>Level {level.id}</Text>
-                  </View>
-                </TouchableOpacity>
-              ))}
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#740000" style={styles.loader} />
+      ) : (
+        <View style={styles.chapterContainer}>
+          {chapters.map((chapter) => (
+            <View key={chapter.id} style={styles.chapterCard}>
+              <Text style={styles.chapterTitle}>{chapter.name}</Text>
+              <View style={styles.levelContainer}>
+                {chapter.levels.map((level) => (
+                  <TouchableOpacity
+                    key={level.id}
+                    style={styles.levelButton}
+                    onPress={() => selectLevel(chapter, level)}
+                  >
+                    <View style={styles.levelContent}>
+                      {level.completed ? <DoneIcon /> : <NotDoneIcon />}
+                      <Text style={styles.levelText}>{level.name}</Text>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </View>
             </View>
-          </View>
-        ))}
-      </View>
+          ))}
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-  },
   container: {
     flex: 1,
     width: "100%",
@@ -160,11 +98,10 @@ const styles = StyleSheet.create({
     width: "100%",
     resizeMode: "cover",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
-    margin: 10,
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   chapterContainer: {
     marginTop: 25,
@@ -201,22 +138,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 1,
   },
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#740000",
-    marginRight: 10,
-  },
-  checkboxChecked: {
-    backgroundColor: "#740000",
-  },
   levelText: {
     color: "#740000",
     fontWeight: "400",
     fontSize: 14,
-    marginLeft:2
+    marginLeft: 2
   },
 });
 
