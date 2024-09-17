@@ -3,7 +3,6 @@ import React from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Breadcrumbs from "./BreadCrumbs";
 import { View, Text, StyleSheet, Image } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const CustomHeader = () => {
   const navigation = useNavigation();
@@ -35,19 +34,14 @@ const CustomHeader = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.header}>
-        <Image source={require("../assets/logo.png")} style={styles.logo} />
-        <Breadcrumbs items={getBreadcrumbItems()} onNavigate={handleNavigate} />
-      </View>
-    </SafeAreaView>
+    <View style={styles.header}>
+      <Image source={require("../assets/logo.png")} style={styles.logo} />
+      <Breadcrumbs items={getBreadcrumbItems()} onNavigate={handleNavigate} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: "transparent", // Set background to transparent
-  },
   header: {
     width: "100%",
     display: "flex",

@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Image, ActivityIndicator } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  ActivityIndicator,
+  ImageBackground,
+} from "react-native";
 import { useRoute } from "@react-navigation/native";
 import Cube from "../assets/3D/cube";
 import TitleContainer from "../Components/TitleContainer";
 import CustomHeader from "../Components/CustomHeader";
-import api from '../services/api';
-import Toast from 'react-native-toast-message';
+import api from "../services/api";
+import Toast from "react-native-toast-message";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Subjects = () => {
   const route = useRoute();
@@ -23,66 +30,66 @@ const Subjects = () => {
       setCampusData(response.data);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error fetching campus details:', error);
+      console.error("Error fetching campus details:", error);
       Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to load campus details. Please try again.',
+        type: "error",
+        text1: "Error",
+        text2: "Failed to load campus details. Please try again.",
       });
       setIsLoading(false);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Image
+    <SafeAreaView style={styles.safeArea}>
+      <ImageBackground
         source={require("../assets/Landing/bg.png")}
-        style={styles.backgroundImage}
+        style={styles.background}
       />
-      <CustomHeader />
-      {isLoading ? (
-        <ActivityIndicator size="large" color="#740000" style={styles.loader} />
-      ) : (
-        <>
-          <TitleContainer
-            title={campusData ? campusData.name : "Choose your Subject"}
-            subtitle="Choose your subject by turning the cube"
+      <View style={styles.content}>
+        <CustomHeader />
+        {isLoading ? (
+          <ActivityIndicator
+            size="large"
+            color="#740000"
+            style={styles.loader}
           />
-          <View style={styles.canvasContainer}>
-            {campusData && campusData.subjects && (
-              <Cube subjects={campusData.subjects} />
-            )}
-          </View>
-        </>
-      )}
-    </View>
+        ) : (
+          <>
+            <TitleContainer
+              title={campusData ? campusData.name : "Choose your Subject"}
+              subtitle="Choose your subject by turning the cube"
+            />
+            <View style={styles.canvasContainer}>
+              {campusData && campusData.subjects && (
+                <Cube subjects={campusData.subjects} />
+              )}
+            </View>
+          </>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#FDDEBC",
+  },
   background: {
     flex: 1,
     width: "100%",
     height: "100%",
-  },
-  container: {
-    flex: 1,
-    width: "100%",
-  },
-  backgroundImage: {
     position: "absolute",
     top: 0,
     left: 0,
     right: 0,
-    height: "100%",
-    width: "100%",
-    resizeMode: "cover",
+    bottom: 0,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
-    margin: 10,
+  content: {
+    flex: 1,
+    zIndex: 1,
   },
   canvasContainer: {
     flex: 1,
@@ -95,8 +102,8 @@ const styles = StyleSheet.create({
   },
   loader: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

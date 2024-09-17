@@ -1,44 +1,52 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image, ImageBackground } from "react-native";
 import { WebView } from "react-native-webview";
 import CustomHeader from "../Components/CustomHeader";
 import { useRoute } from "@react-navigation/native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Content = () => {
   const route = useRoute();
   const { chapterId, chapterTitle, level } = route.params;
 
   return (
-    <View style={styles.container}>
-      <Image
+    <SafeAreaView style={styles.safeArea}>
+      <ImageBackground
         source={require("../assets/Content/bg.png")}
-        style={styles.backgroundImage}
+        style={styles.background}
       />
-      <CustomHeader />
-      <View style={styles.contentContainer}>
-        <WebView
-          source={{ uri: level.pdflink }}
-          style={styles.webview}
-          scalesPageToFit={true} // Ensures the PDF scales to fit the WebView
-        />
+      <View style={styles.content}>
+        <CustomHeader />
+        <View style={styles.contentContainer}>
+          <WebView
+            source={{ uri: level.pdflink }}
+            style={styles.webview}
+            scalesPageToFit={true}
+          />
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#FDDEBC",
+  },
+  background: {
     flex: 1,
     width: "100%",
-  },
-  backgroundImage: {
+    height: "100%",
     position: "absolute",
     top: 0,
     left: 0,
     right: 0,
-    height: "100%",
-    width: "100%",
-    resizeMode: "cover",
+    bottom: 0,
+  },
+  content: {
+    flex: 1,
+    zIndex: 1,
   },
   contentContainer: {
     flex: 1,

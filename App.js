@@ -3,6 +3,7 @@ import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Toast from 'react-native-toast-message';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Landing from "./Screens/Landing";
 import Login from "./Screens/Login";
 import Campus from "./Screens/Campus";
@@ -14,7 +15,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <>
+    <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Landing">
           <Stack.Screen
@@ -50,6 +51,6 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />
-    </>
+    </SafeAreaProvider>
   );
 }

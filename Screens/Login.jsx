@@ -9,7 +9,8 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from "@react-navigation/native";
 import Toast from 'react-native-toast-message';
 import authService from '../services/authService';
 
@@ -22,25 +23,25 @@ const Login = () => {
   const validateInputs = () => {
     if (!email.trim()) {
       Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Please enter your email',
+        type: "error",
+        text1: "Error",
+        text2: "Please enter your email",
       });
       return false;
     }
     if (!password.trim()) {
       Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Please enter your password',
+        type: "error",
+        text1: "Error",
+        text2: "Please enter your password",
       });
       return false;
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
       Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Please enter a valid email address',
+        type: "error",
+        text1: "Error",
+        text2: "Please enter a valid email address",
       });
       return false;
     }
@@ -59,22 +60,22 @@ const Login = () => {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         Toast.show({
-          type: 'error',
-          text1: 'Login Error',
+          type: "error",
+          text1: "Login Error",
           text2: error.response.data.msg || "An error occurred during login.",
         });
       } else if (error.request) {
         // The request was made but no response was received
         Toast.show({
-          type: 'error',
-          text1: 'Network Error',
+          type: "error",
+          text1: "Network Error",
           text2: "Unable to connect to the server. Please try again.",
         });
       } else {
         // Something happened in setting up the request that triggered an Error
         Toast.show({
-          type: 'error',
-          text1: 'Error',
+          type: "error",
+          text1: "Error",
           text2: "An unexpected error occurred.",
         });
       }
@@ -84,67 +85,86 @@ const Login = () => {
   };
 
   return (
-    <ImageBackground
-      source={require("../assets/Login/bg.png")} // Replace with the path to your background image
-      style={styles.background}
-      resizeMode="cover"
-    >
-      {/* Logo */}
-      <Image source={require("../assets/logo.png")} style={styles.logo} />
+    <SafeAreaView style={styles.safeArea}>
+      <ImageBackground
+        source={require("../assets/Login/bg.png")}
+        style={styles.background}
+      />
+      <View style={styles.content}>
+        {/* Logo */}
+        <Image source={require("../assets/logo.png")} style={styles.logo} />
 
-      {/* Main Login Form Container */}
-      <View style={styles.loginContainer}>
-        <Text style={styles.welcomeText}>Welcome to Belakoo</Text>
-        <Text style={styles.instructionsText}>
-          Please login with your registered Email-ID & Password to continue
-        </Text>
+        {/* Main Login Form Container */}
+        <View style={styles.loginContainer}>
+          <Text style={styles.welcomeText}>Welcome to Belakoo</Text>
+          <Text style={styles.instructionsText}>
+            Please login with your registered Email-ID & Password to continue
+          </Text>
 
-        {/* Email Input */}
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your Email ID"
-          placeholderTextColor="#CCCCCC"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
+          {/* Email Input */}
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your Email ID"
+            placeholderTextColor="#CCCCCC"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
 
-        {/* Password Input */}
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your password"
-          placeholderTextColor="#CCCCCC"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          secureTextEntry
-        />
+          {/* Password Input */}
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your password"
+            placeholderTextColor="#CCCCCC"
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+            secureTextEntry
+          />
 
-        {/* Forgot Password Link */}
-        <TouchableOpacity>
-          <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
-        </TouchableOpacity>
+          {/* Forgot Password Link */}
+          <TouchableOpacity>
+            <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
+          </TouchableOpacity>
 
-        {/* Login Button */}
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin} disabled={isLoading}>
-          {isLoading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.loginButtonText}>Log in</Text>
-          )}
-        </TouchableOpacity>
+          {/* Login Button */}
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={handleLogin}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.loginButtonText}>Log in</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+        <Toast />
       </View>
-      <Toast />
-    </ImageBackground>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#FDDEBC",
+  },
   background: {
     flex: 1,
-    alignItems: "center",
     width: "100%",
     height: "100%",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  content: {
+    flex: 1,
+    zIndex: 1,
+    alignItems: "center",
   },
   logo: {
     width: 225,
@@ -154,7 +174,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   loginContainer: {
-    width: "90%", // Slightly adjusted to fit within the screen with padding
+    width: "90%",
     padding: 20,
     backgroundColor: "#fff",
     borderRadius: 10,

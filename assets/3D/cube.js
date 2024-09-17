@@ -48,8 +48,6 @@ const CubeComponent = ({ subjects = [] }) => {
       }
     });
 
-    console.log(`Loaded ${loadedTextures.length} textures`);
-
     while (loadedTextures.length < 6) {
       loadedTextures.push(defaultTexture);
     }
@@ -87,7 +85,6 @@ const CubeComponent = ({ subjects = [] }) => {
 };
 
 const Cube = ({ subjects }) => {
-  console.log("Subjects received in Cube:", subjects);
 
   return (
     <View style={styles.container}>

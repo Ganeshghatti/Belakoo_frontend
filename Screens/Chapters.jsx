@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Image, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  ImageBackground,
+} from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import CustomHeader from "../Components/CustomHeader";
 import TitleContainer from "../Components/TitleContainer";
 import DoneIcon from "../assets/icons/Done";
 import NotDoneIcon from "../assets/icons/NotDone";
-import api from '../services/api';
-import Toast from 'react-native-toast-message';
+import api from "../services/api";
+import Toast from "react-native-toast-message";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Chapters = () => {
   const route = useRoute();
@@ -25,11 +34,11 @@ const Chapters = () => {
       setChapters(response.data.chapters);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error fetching subject details:', error);
+      console.error("Error fetching subject details:", error);
       Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to load chapters. Please try again.',
+        type: "error",
+        text1: "Error",
+        text2: "Failed to load chapters. Please try again.",
       });
       setIsLoading(false);
     }
@@ -44,64 +53,74 @@ const Chapters = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image
+    <SafeAreaView style={styles.safeArea}>
+      <ImageBackground
         source={require("../assets/Chapters/bg.png")}
-        style={styles.backgroundImage}
+        style={styles.background}
       />
-      <CustomHeader />
-      <TitleContainer
-        title={subjectName}
-        subtitle="Select chapters and levels"
-      />
-
-      {isLoading ? (
-        <ActivityIndicator size="large" color="#740000" style={styles.loader} />
-      ) : (
-        <View style={styles.chapterContainer}>
-          {chapters.map((chapter) => (
-            <View key={chapter.id} style={styles.chapterCard}>
-              <Text style={styles.chapterTitle}>{chapter.name}</Text>
-              <View style={styles.levelContainer}>
-                {chapter.levels.map((level) => (
-                  <TouchableOpacity
-                    key={level.id}
-                    style={styles.levelButton}
-                    onPress={() => selectLevel(chapter, level)}
-                  >
-                    <View style={styles.levelContent}>
-                      {level.completed ? <DoneIcon /> : <NotDoneIcon />}
-                      <Text style={styles.levelText}>{level.name}</Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
+      <View style={styles.content}>
+        <CustomHeader />
+        <TitleContainer
+          title={subjectName}
+          subtitle="Select chapters and levels"
+        />
+        {isLoading ? (
+          <ActivityIndicator
+            size="large"
+            color="#740000"
+            style={styles.loader}
+          />
+        ) : (
+          <View style={styles.chapterContainer}>
+            {chapters.map((chapter) => (
+              <View key={chapter.id} style={styles.chapterCard}>
+                <Text style={styles.chapterTitle}>{chapter.name}</Text>
+                <View style={styles.levelContainer}>
+                  {chapter.levels.map((level) => (
+                    <TouchableOpacity
+                      key={level.id}
+                      style={styles.levelButton}
+                      onPress={() => selectLevel(chapter, level)}
+                    >
+                      <View style={styles.levelContent}>
+                        {level.completed ? <DoneIcon /> : <NotDoneIcon />}
+                        <Text style={styles.levelText}>{level.name}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
               </View>
-            </View>
-          ))}
-        </View>
-      )}
-    </View>
+            ))}
+          </View>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#FDDEBC",
+  },
+  background: {
     flex: 1,
     width: "100%",
-  },
-  backgroundImage: {
+    height: "100%",
     position: "absolute",
     top: 0,
     left: 0,
     right: 0,
-    height: "100%",
-    width: "100%",
-    resizeMode: "cover",
+    bottom: 0,
+  },
+  content: {
+    flex: 1,
+    zIndex: 1,
   },
   loader: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   chapterContainer: {
     marginTop: 25,
@@ -142,7 +161,7 @@ const styles = StyleSheet.create({
     color: "#740000",
     fontWeight: "400",
     fontSize: 14,
-    marginLeft: 2
+    marginLeft: 2,
   },
 });
 
