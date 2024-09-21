@@ -10,10 +10,31 @@ import Campus from "./Screens/Campus";
 import Subjects from "./Screens/Subjects";
 import Chapters from "./Screens/Chapters";
 import Content from "./Screens/Content";
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  useEffect(() => {
+    async function prepare() {
+      try {
+        // Keep the splash screen visible while we fetch resources
+        await SplashScreen.preventAutoHideAsync();
+        // Load resources here (fonts, data, etc.)
+        
+        // Any other initialization logic
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        // Hide the splash screen
+        await SplashScreen.hideAsync();
+      }
+    }
+
+    prepare();
+  }, []);
+
   return (
     <SafeAreaProvider>
       <NavigationContainer>

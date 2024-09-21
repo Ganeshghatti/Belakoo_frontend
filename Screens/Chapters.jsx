@@ -83,7 +83,7 @@ const Chapters = () => {
                       onPress={() => selectLevel(chapter, level)}
                     >
                       <View style={styles.levelContent}>
-                        {level.completed ? <DoneIcon /> : <NotDoneIcon />}
+                        {level.is_done ? <DoneIcon /> : <NotDoneIcon />}
                         <Text style={styles.levelText}>{level.name}</Text>
                       </View>
                     </TouchableOpacity>
