@@ -17,8 +17,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 20,
     paddingBottom: 20,
-    backgroundColor:"white",
-    marginTop:10
+    backgroundColor: "white",
+    marginTop: 10,
+    rowGap: 6,
+    columnGap: 6
   }
 });
 

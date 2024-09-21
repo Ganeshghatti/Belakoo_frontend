@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 12, 
     color: '#740000',
+    textTransform: 'uppercase',
   },
   separator: {
     fontSize: 10,

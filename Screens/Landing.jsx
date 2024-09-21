@@ -10,8 +10,8 @@ import {
 import DescriptionComponent from "../Components/TextComponents/DescriptionComponent";
 import { LinearGradient } from "expo-linear-gradient"; // Import LinearGradient from expo-linear-gradient
 import TitleComponent from "../Components/TextComponents/TitleComponent";
-import CustomSafeAreaView from '../Components/CustomSafeAreaView';
-import { Link, useRouter } from 'expo-router';
+import CustomSafeAreaView from "../Components/CustomSafeAreaView";
+import { Link, useRouter } from "expo-router";
 
 const Landing = () => {
   const router = useRouter();
@@ -35,25 +35,24 @@ const Landing = () => {
                 <TitleComponent titleText="What" />
                 <DescriptionComponent descriptionText="Lorem ipsum dolor sit amet. Et inventore illum quo veniam illum quo fugiat nostrum eos nemo veritatis pariatur" />
                 <TouchableOpacity>
-                  <Text style={styles.cardLink}>Know More</Text>
+                  <Text style={styles.cardLink}>Know More&gt;</Text>
                 </TouchableOpacity>
               </View>
 
               <View style={styles.card}>
                 <TitleComponent titleText="What" />
-                <DescriptionComponent descriptionText="Another description goes here for the second card." />
+                <DescriptionComponent descriptionText="Lorem ipsum dolor sit amet. Et inventore illum quo veniam illum quo fugiat nostrum eos nemo veritatis pariatur" />
                 <TouchableOpacity>
-                  <Text style={styles.cardLink}>Know More</Text>
+                  <Text style={styles.cardLink}>Know More&gt;</Text>
                 </TouchableOpacity>
               </View>
             </View>
             <Text style={styles.loginText}>
               Login to get the best of our services
             </Text>
-
             <Link href="/login" asChild>
-              <TouchableOpacity>
-                <Text>Go to Login</Text>
+              <TouchableOpacity style={styles.loginButton}>
+                <Text style={styles.loginButtonText}>Log in</Text>
               </TouchableOpacity>
             </Link>
           </View>
@@ -86,7 +85,7 @@ const styles = StyleSheet.create({
     width: 165,
     height: 60,
     resizeMode: "contain",
-    marginTop: 50,
+    marginTop: 20,
     marginLeft: 10,
   },
   mainContainer: {
@@ -128,10 +127,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 10,
     elevation: 5,
+    gap:4
   },
   cardLink: {
     fontSize: 14,
-    color: "#FF6600",
+    color: "#740000",
     fontWeight: "700",
   },
   loginButton: {
@@ -140,18 +140,20 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     width: "60%",
     alignItems: "center",
-    marginHorizontal: "auto",
+    alignSelf: "center",
+    marginBottom: 10,
   },
   loginText: {
     color: "#740000",
     fontSize: 12,
     fontWeight: "400",
     textAlign: "center",
+    marginTop: 10,
   },
   loginButtonText: {
     color: "#fff",
     fontSize: 16,
-    fontWeight: "400",
+    fontWeight: "500",
   },
 });
 

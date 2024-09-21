@@ -56,7 +56,7 @@ const Subjects = () => {
         ) : (
           <>
             <TitleContainer
-              title={campusData ? campusData.name : "Choose your Subject"}
+              title="Choose your Subject"
               subtitle="Choose your subject by turning the cube"
             />
             <View style={styles.canvasContainer}>

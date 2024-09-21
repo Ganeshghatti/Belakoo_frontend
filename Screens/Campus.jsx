@@ -107,10 +107,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 60, // Adjust this value to account for the status bar and header
+    paddingBottom: 60, // Adjust this value to account for the status bar and header
   },
   campusContainer: {
-    width: "90%",
+    width: "95%",
     backgroundColor: "white",
     paddingVertical: 44,
     borderRadius: 15,
@@ -128,9 +128,9 @@ const styles = StyleSheet.create({
   },
   campusCard: {
     width: "45%",
-    paddingVertical: 16,
-    paddingHorizontal: 12,
-    gap: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    rowGap: 10,
     alignItems: "center",
     borderRadius: 29,
     backgroundColor: "#FFF4E6",

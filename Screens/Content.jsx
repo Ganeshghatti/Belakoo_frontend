@@ -20,7 +20,7 @@ const Content = () => {
   const parsedLevel = JSON.parse(level);
   const [isDone, setIsDone] = useState(parsedLevel.is_done);
   const [showPopup, setShowPopup] = useState(false);
-  console.log(chapterId, chapterTitle, level);
+
   const handleMarkDone = async () => {
     setShowPopup(true);
   };
@@ -64,7 +64,6 @@ const Content = () => {
           >
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
-          <Text style={styles.title}>{chapterTitle}</Text>
           <TouchableOpacity
             style={[styles.markButton, isDone && styles.markButtonDone]}
             onPress={handleMarkDone}
@@ -151,13 +150,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   markButton: {
-    backgroundColor: "#740000",
+    backgroundColor: "#169331",
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 20,
   },
   markButtonDone: {
-    backgroundColor: "#169331",
+    backgroundColor: "#740000",
   },
   markButtonText: {
     color: "white",

@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
     rowGap: 25,
     backgroundColor: "white",
     paddingVertical: 15,
+    paddingHorizontal: 10,
     borderRadius: 5,
   },
   chapterCard: {
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   chapterTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "700",
     marginBottom: 6,
     color: "#740000",
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
   levelText: {
     color: "#740000",
     fontWeight: "400",
-    fontSize: 14,
+    fontSize: 12,
     marginLeft: 2,
   },
 });

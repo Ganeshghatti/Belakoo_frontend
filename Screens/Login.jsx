@@ -12,10 +12,10 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import { Link, useRouter } from 'expo-router';
-import CustomSafeAreaView from '../Components/CustomSafeAreaView';
+import { Link, useRouter } from "expo-router";
+import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 import Toast from "react-native-toast-message";
-import authService from '../services/authService';
+import authService from "../services/authService";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -93,20 +93,24 @@ const Login = () => {
         source={require("../assets/Login/bg.png")}
         style={styles.background}
       >
-        <KeyboardAvoidingView 
+        <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.keyboardAvoidingView}
         >
-          <ScrollView 
+          <ScrollView
             contentContainerStyle={styles.scrollViewContent}
             keyboardShouldPersistTaps="handled"
           >
             <View style={styles.content}>
-              <Image source={require("../assets/logo.png")} style={styles.logo} />
+              <Image
+                source={require("../assets/logo.png")}
+                style={styles.logo}
+              />
               <View style={styles.loginContainer}>
                 <Text style={styles.welcomeText}>Welcome to Belakoo</Text>
                 <Text style={styles.instructionsText}>
-                  Please login with your registered Email-ID & Password to continue
+                  Please login with your registered Email-ID & Password to
+                  continue
                 </Text>
                 <TextInput
                   style={styles.input}
@@ -126,7 +130,9 @@ const Login = () => {
                   secureTextEntry
                 />
                 <TouchableOpacity>
-                  <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
+                  <Text style={styles.forgotPasswordText}>
+                    Forgot your password?
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.loginButton}
@@ -151,8 +157,8 @@ const Login = () => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   safeArea: {
     flex: 1,
@@ -162,11 +168,11 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     flexGrow: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20,
   },
@@ -176,7 +182,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     position: "absolute",
     top: 25,
-    margin:"auto"
+    margin: "auto",
   },
   loginContainer: {
     width: "100%",
@@ -194,6 +200,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 10,
     color: "#4E4949",
+    fontWeight: "700",
   },
   instructionsText: {
     marginBottom: 20,
@@ -218,6 +225,7 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     color: "#4E4949",
     marginBottom: 20,
+    textDecorationLine: "underline"
   },
   loginButton: {
     backgroundColor: "#F56E00",

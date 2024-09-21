@@ -2,7 +2,7 @@
   "expo": {
     "name": "Belakoo",
     "slug": "Belakoo",
-    "scheme": "Belakoo",
+    "scheme": "belakoo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/customicon.png",

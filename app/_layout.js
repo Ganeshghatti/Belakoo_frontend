@@ -8,7 +8,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [fontsLoaded, error] = useFonts({
-    "gothambold": require("../assets/fonts/GothamBold.ttf"),
+    "gothambold": require("../assets/fonts/GothamMedium.ttf"),
   });
 
   useEffect(() => {
