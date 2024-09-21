@@ -8,13 +8,13 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CampusIconSvg from "../assets/icons/CampusIconSvg";
-import TitleComponent from "../Components/TextComponents/TitleComponent";
 import DescriptionComponent from "../Components/TextComponents/DescriptionComponent";
 import HeadingComponent from "../Components/TextComponents/HeadingComponent";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomHeader from "../Components/CustomHeader";
 import api from '../services/api';
 import Toast from 'react-native-toast-message';
+import TitleComponent from "../Components/TextComponents/TitleComponent";
 
 const Campus = () => {
   const navigation = useNavigation();

@@ -8,6 +8,9 @@ import {
   Image,
   StyleSheet,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from "@react-navigation/native";
@@ -18,7 +21,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const navigation = useNavigation(); // Initialize useNavigation
+  const navigation = useNavigation();
 
   const validateInputs = () => {
     if (!email.trim()) {
@@ -85,96 +88,97 @@ const Login = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ImageBackground
-        source={require("../assets/Login/bg.png")}
-        style={styles.background}
-      />
-      <View style={styles.content}>
-        {/* Logo */}
-        <Image source={require("../assets/logo.png")} style={styles.logo} />
-
-        {/* Main Login Form Container */}
-        <View style={styles.loginContainer}>
-          <Text style={styles.welcomeText}>Welcome to Belakoo</Text>
-          <Text style={styles.instructionsText}>
-            Please login with your registered Email-ID & Password to continue
-          </Text>
-
-          {/* Email Input */}
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your Email ID"
-            placeholderTextColor="#CCCCCC"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-
-          {/* Password Input */}
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your password"
-            placeholderTextColor="#CCCCCC"
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            secureTextEntry
-          />
-
-          {/* Forgot Password Link */}
-          <TouchableOpacity>
-            <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
-          </TouchableOpacity>
-
-          {/* Login Button */}
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={handleLogin}
-            disabled={isLoading}
+    <ImageBackground
+      source={require("../assets/Login/bg.png")}
+      style={styles.background}
+    >
+      <SafeAreaView style={styles.safeArea}>
+        <KeyboardAvoidingView 
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.keyboardAvoidingView}
+        >
+          <ScrollView 
+            contentContainerStyle={styles.scrollViewContent}
+            keyboardShouldPersistTaps="handled"
           >
-            {isLoading ? (
-              <ActivityIndicator color="#fff" />
-            ) : (
-              <Text style={styles.loginButtonText}>Log in</Text>
-            )}
-          </TouchableOpacity>
-        </View>
-        <Toast />
-      </View>
-    </SafeAreaView>
+            <View style={styles.content}>
+              <Image source={require("../assets/logo.png")} style={styles.logo} />
+              <View style={styles.loginContainer}>
+                <Text style={styles.welcomeText}>Welcome to Belakoo</Text>
+                <Text style={styles.instructionsText}>
+                  Please login with your registered Email-ID & Password to continue
+                </Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your Email ID"
+                  placeholderTextColor="#CCCCCC"
+                  value={email}
+                  onChangeText={(text) => setEmail(text)}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your password"
+                  placeholderTextColor="#CCCCCC"
+                  value={password}
+                  onChangeText={(text) => setPassword(text)}
+                  secureTextEntry
+                />
+                <TouchableOpacity>
+                  <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.loginButton}
+                  onPress={handleLogin}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <ActivityIndicator color="#fff" />
+                  ) : (
+                    <Text style={styles.loginButtonText}>Log in</Text>
+                  )}
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+      <Toast />
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#FDDEBC",
-  },
   background: {
     flex: 1,
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    width: '100%',
+    height: '100%',
+  },
+  safeArea: {
+    flex: 1,
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
   },
   content: {
     flex: 1,
-    zIndex: 1,
+    justifyContent: 'center',
     alignItems: "center",
+    paddingHorizontal: 20,
   },
   logo: {
     width: 225,
     height: 120,
     resizeMode: "contain",
-    marginBottom: 80,
-    marginTop: 50,
+    marginBottom: 40,
   },
   loginContainer: {
-    width: "90%",
+    width: "100%",
     padding: 20,
     backgroundColor: "#fff",
     borderRadius: 10,
