@@ -6,14 +6,14 @@ import {
   ImageBackground,
   ActivityIndicator,
 } from "react-native";
-import { Link, useRouter } from 'expo-router';
+import { Link, useRouter } from "expo-router";
 import CampusIconSvg from "../assets/icons/CampusIconSvg";
 import DescriptionComponent from "../Components/TextComponents/DescriptionComponent";
 import HeadingComponent from "../Components/TextComponents/HeadingComponent";
-import CustomSafeAreaView from '../Components/CustomSafeAreaView';
+import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 import CustomHeader from "../Components/CustomHeader";
-import api from '../services/api';
-import Toast from 'react-native-toast-message';
+import api from "../services/api";
+import Toast from "react-native-toast-message";
 import TitleComponent from "../Components/TextComponents/TitleComponent";
 
 const Campus = () => {
@@ -27,15 +27,15 @@ const Campus = () => {
 
   const fetchCampuses = async () => {
     try {
-      const response = await api.get('/api/campuses/');
+      const response = await api.get("/api/campuses/");
       setCampuses(response.data);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error fetching campuses:', error);
+      console.error("Error fetching campuses:", error);
       Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to load campuses. Please try again.',
+        type: "error",
+        text1: "Error",
+        text2: "Failed to load campuses. Please try again.",
       });
       setIsLoading(false);
     }
@@ -57,7 +57,14 @@ const Campus = () => {
             ) : (
               <View style={styles.cardContainer}>
                 {campuses.map((campus) => (
-                  <Link key={campus.id} href={{ pathname: "/subjects", params: { campusId: campus.id } }} asChild>
+                  <Link
+                    key={campus.id}
+                    href={{
+                      pathname: "/subjects",
+                      params: { campusId: campus.id },
+                    }}
+                    asChild
+                  >
                     <TouchableOpacity style={styles.campusCard}>
                       <TitleComponent titleText={campus.name} />
                       <CampusIconSvg />

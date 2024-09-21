@@ -18,7 +18,7 @@ import Toast from "react-native-toast-message";
 import CustomSafeAreaView from '../Components/CustomSafeAreaView';
 
 const Chapters = () => {
-  const { subjectId } = useLocalSearchParams();
+  const { subjectId, subjectName } = useLocalSearchParams();
   const router = useRouter();
   const [chapters, setChapters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -59,7 +59,7 @@ const Chapters = () => {
       <View style={styles.content}>
         <CustomHeader />
         <TitleContainer
-          title={subjectName}
+          title={subjectName || "Select Chapters"}
           subtitle="Select chapters and levels"
         />
         {isLoading ? (

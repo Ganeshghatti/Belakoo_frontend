@@ -1,7 +1,7 @@
 import React, { useRef, useMemo } from "react";
 import { Canvas, useLoader } from "@react-three/fiber/native";
 import { OrbitControls } from "@react-three/drei";
-import { useNavigation } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 import { View, StyleSheet } from "react-native";
 import { TextureLoader } from "three";
 
@@ -14,7 +14,7 @@ const getDirectImageUrl = (driveUrl) => {
 };
 
 const CubeComponent = ({ subjects = [] }) => {
-  const navigation = useNavigation();
+  const router = useRouter();
   const mesh = useRef(null);
 
   // Load textures for cube faces
@@ -62,9 +62,12 @@ const CubeComponent = ({ subjects = [] }) => {
 
     if (faceIndex < subjects.length) {
       const selectedSubject = subjects[faceIndex];
-      navigation.navigate("Chapters", {
-        subjectId: selectedSubject.id,
-        subjectName: selectedSubject.name,
+      router.push({
+        pathname: "/chapters",
+        params: { 
+          subjectId: selectedSubject.id,
+          subjectName: selectedSubject.name
+        }
       });
     }
   };

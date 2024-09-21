@@ -8,14 +8,13 @@ import {
   ImageBackground,
 } from "react-native";
 import DescriptionComponent from "../Components/TextComponents/DescriptionComponent";
-import { useNavigation } from "@react-navigation/native"; // Import the hook for navigation
 import { LinearGradient } from "expo-linear-gradient"; // Import LinearGradient from expo-linear-gradient
 import TitleComponent from "../Components/TextComponents/TitleComponent";
 import CustomSafeAreaView from '../Components/CustomSafeAreaView';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
 const Landing = () => {
-  const navigation = useNavigation();
+  const router = useRouter();
 
   return (
     <CustomSafeAreaView>

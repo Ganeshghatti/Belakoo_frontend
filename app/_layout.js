@@ -2,6 +2,7 @@ import { Slot } from "expo-router";
 import { useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
+import { Text } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,6 +26,10 @@ export default function RootLayout() {
   if (!fontsLoaded && !error) {
     return null;
   }
+
+  // Set the default font family for all Text components
+  Text.defaultProps = Text.defaultProps || {};
+  Text.defaultProps.style = { fontFamily: 'gothambold' };
 
   return <Slot />;
 }

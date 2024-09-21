@@ -7,9 +7,9 @@ import {
   ImageBackground,
   Modal,
 } from "react-native";
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useRouter, useLocalSearchParams } from "expo-router";
 import { WebView } from "react-native-webview";
-import CustomSafeAreaView from '../Components/CustomSafeAreaView';
+import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 import api from "../services/api";
 import Toast from "react-native-toast-message";
 
@@ -20,29 +20,22 @@ const Content = () => {
   const parsedLevel = JSON.parse(level);
   const [isDone, setIsDone] = useState(parsedLevel.is_done);
   const [showPopup, setShowPopup] = useState(false);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, [navigation]);
-
+  console.log(chapterId, chapterTitle, level);
   const handleMarkDone = async () => {
     setShowPopup(true);
   };
 
   const confirmMarkDone = async () => {
     try {
-      const endpoint = isDone ? 'mark-not-done' : 'mark-done';
-      console.log(level.id,endpoint)
-      await api.post(`/api/levels/${level.id}/${endpoint}/`);
+      const endpoint = isDone ? "mark-not-done" : "mark-done";
+      await api.post(`/api/levels/${parsedLevel.id}/${endpoint}/`);
       setIsDone(!isDone);
 
       setShowPopup(false);
       Toast.show({
         type: "success",
         text1: "Success",
-        text2: `Level marked as ${isDone ? 'not done' : 'done'}.`,
+        text2: `Level marked as ${isDone ? "not done" : "done"}.`,
         position: "bottom",
       });
     } catch (error) {
@@ -65,7 +58,10 @@ const Content = () => {
       />
       <View style={styles.content}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+          <TouchableOpacity
+            onPress={() => router.back()}
+            style={styles.backButton}
+          >
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
           <Text style={styles.title}>{chapterTitle}</Text>
@@ -80,7 +76,7 @@ const Content = () => {
         </View>
         <View style={styles.contentContainer}>
           <WebView
-            source={{ uri: level.pdflink }}
+            source={{ uri: parsedLevel.pdflink }}
             style={styles.webview}
             scalesPageToFit={true}
           />
@@ -95,7 +91,8 @@ const Content = () => {
         <View style={styles.popupContainer}>
           <View style={styles.popup}>
             <Text style={styles.popupText}>
-              Are you sure you want to mark this level as {isDone ? 'not done' : 'done'}?
+              Are you sure you want to mark this level as{" "}
+              {isDone ? "not done" : "done"}?
             </Text>
             <View style={styles.popupButtonContainer}>
               <TouchableOpacity
@@ -125,33 +122,33 @@ const styles = StyleSheet.create({
   },
   background: {
     flex: 1,
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
+    position: "absolute",
+    width: "100%",
+    height: "100%",
   },
   content: {
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
   },
   backButton: {
     padding: 5,
   },
   backButtonText: {
     fontSize: 24,
-    color: '#740000',
+    color: "#740000",
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#740000',
+    fontWeight: "bold",
+    color: "#740000",
     flex: 1,
-    textAlign: 'center',
+    textAlign: "center",
   },
   markButton: {
     backgroundColor: "#740000",
@@ -174,43 +171,57 @@ const styles = StyleSheet.create({
   },
   popupContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   popup: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 20,
     borderRadius: 10,
-    alignItems: 'center',
-    width: '80%',
+    alignItems: "center",
+    width: "80%",
   },
   popupText: {
     fontSize: 16,
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   popupButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
   },
   popupButton: {
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 5,
-    width: '45%',
+    width: "45%",
   },
   cancelButton: {
-    backgroundColor: '#808080',
+    backgroundColor: "#808080",
   },
   confirmButton: {
-    backgroundColor: '#740000',
+    backgroundColor: "#740000",
   },
   popupButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
+  },
+  doneButton: {
+    padding: 10,
+    borderRadius: 5,
+  },
+  doneButtonGreen: {
+    backgroundColor: 'green',
+  },
+  doneButtonGray: {
+    backgroundColor: 'gray',
+  },
+  doneButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 
