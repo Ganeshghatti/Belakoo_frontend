@@ -6,17 +6,16 @@ import {
   ActivityIndicator,
   ImageBackground,
 } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { useLocalSearchParams } from 'expo-router';
 import Cube from "../assets/3D/cube";
 import TitleContainer from "../Components/TitleContainer";
 import CustomHeader from "../Components/CustomHeader";
 import api from "../services/api";
 import Toast from "react-native-toast-message";
-import { SafeAreaView } from "react-native-safe-area-context";
+import CustomSafeAreaView from '../Components/CustomSafeAreaView';
 
 const Subjects = () => {
-  const route = useRoute();
-  const { campusId } = route.params;
+  const { campusId } = useLocalSearchParams();
   const [campusData, setCampusData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -41,7 +40,7 @@ const Subjects = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <CustomSafeAreaView>
       <ImageBackground
         source={require("../assets/Landing/bg.png")}
         style={styles.background}
@@ -68,7 +67,7 @@ const Subjects = () => {
           </>
         )}
       </View>
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

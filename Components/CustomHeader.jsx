@@ -1,42 +1,38 @@
 // CustomHeader.js
 import React from "react";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRouter, usePathname } from 'expo-router';
 import Breadcrumbs from "./BreadCrumbs";
 import { View, Text, StyleSheet, Image } from "react-native";
 
 const CustomHeader = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
+  const router = useRouter();
+  const pathname = usePathname();
 
   // Define breadcrumb items based on the current route
   const getBreadcrumbItems = () => {
-    switch (route.name) {
-      case "Campus":
-        return [{ key: "campus", label: "Campus", route: "Campus" }];
-      case "Subjects":
+    switch (pathname) {
+      case "/campus":
+        return [{ key: "campus", label: "Campus", route: "/campus" }];
+      case "/subjects":
         return [
-          { key: "campus", label: "Campus", route: "Campus" },
-          { key: "subjects", label: "Subjects", route: "Subjects" },
+          { key: "campus", label: "Campus", route: "/campus" },
+          { key: "subjects", label: "Subjects", route: "/subjects" },
         ];
-      case "Chapters":
+      case "/chapters":
         return [
-          { key: "campus", label: "Campus", route: "Campus" },
-          { key: "subjects", label: "Subjects", route: "Subjects" },
-          { key: "chapters", label: "Chapters", route: "Chapters" },
+          { key: "campus", label: "Campus", route: "/campus" },
+          { key: "subjects", label: "Subjects", route: "/subjects" },
+          { key: "chapters", label: "Chapters", route: "/chapters" },
         ];
       default:
         return [];
     }
   };
 
-  const handleNavigate = (routeName) => {
-    navigation.navigate(routeName);
-  };
-
   return (
     <View style={styles.header}>
       <Image source={require("../assets/logo.png")} style={styles.logo} />
-      <Breadcrumbs items={getBreadcrumbItems()} onNavigate={handleNavigate} />
+      <Breadcrumbs items={getBreadcrumbItems()} />
     </View>
   );
 };

@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#740000",
     fontWeight: "400",
-    fontFamily: "GothamBold",
+    fontFamily: "gothambold",
   },
 });
 

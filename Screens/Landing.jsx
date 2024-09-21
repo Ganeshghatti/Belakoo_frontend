@@ -5,20 +5,20 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
-  StatusBar,
   ImageBackground,
 } from "react-native";
 import DescriptionComponent from "../Components/TextComponents/DescriptionComponent";
 import { useNavigation } from "@react-navigation/native"; // Import the hook for navigation
 import { LinearGradient } from "expo-linear-gradient"; // Import LinearGradient from expo-linear-gradient
 import TitleComponent from "../Components/TextComponents/TitleComponent";
+import CustomSafeAreaView from '../Components/CustomSafeAreaView';
+import { Link } from 'expo-router';
 
 const Landing = () => {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <CustomSafeAreaView>
       <ImageBackground
         source={require("../assets/Landing/bg.png")}
         style={styles.background}
@@ -52,16 +52,15 @@ const Landing = () => {
               Login to get the best of our services
             </Text>
 
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={() => navigation.navigate("Login")}
-            >
-              <Text style={styles.loginButtonText}>Log in</Text>
-            </TouchableOpacity>
+            <Link href="/login" asChild>
+              <TouchableOpacity>
+                <Text>Go to Login</Text>
+              </TouchableOpacity>
+            </Link>
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

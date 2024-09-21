@@ -1,15 +1,16 @@
 // Breadcrumbs.js
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { Link } from 'expo-router';
 
-const Breadcrumbs = ({ items, onNavigate }) => {
+const Breadcrumbs = ({ items }) => {
   return (
     <View style={styles.container}>
       {items.map((item, index) => (
         <React.Fragment key={item.key}>
-          <TouchableOpacity onPress={() => onNavigate(item.route)}>
+          <Link href={item.route} asChild>
             <Text style={styles.text}>{item.label}</Text>
-          </TouchableOpacity>
+          </Link>
           {index < items.length - 1 && <Text style={styles.separator}> {'>'} </Text>}
         </React.Fragment>
       ))}

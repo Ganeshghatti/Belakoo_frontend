@@ -8,19 +8,18 @@ import {
   ActivityIndicator,
   ImageBackground,
 } from "react-native";
-import { useRoute, useNavigation } from "@react-navigation/native";
+import { Link, useRouter, useLocalSearchParams } from 'expo-router';
 import CustomHeader from "../Components/CustomHeader";
 import TitleContainer from "../Components/TitleContainer";
 import DoneIcon from "../assets/icons/Done";
 import NotDoneIcon from "../assets/icons/NotDone";
 import api from "../services/api";
 import Toast from "react-native-toast-message";
-import { SafeAreaView } from "react-native-safe-area-context";
+import CustomSafeAreaView from '../Components/CustomSafeAreaView';
 
 const Chapters = () => {
-  const route = useRoute();
-  const navigation = useNavigation();
-  const { subjectId, subjectName } = route.params;
+  const { subjectId } = useLocalSearchParams();
+  const router = useRouter();
   const [chapters, setChapters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -44,16 +43,15 @@ const Chapters = () => {
     }
   };
 
-  const selectLevel = (chapter, level) => {
-    navigation.navigate("Content", {
-      chapterId: chapter.id,
-      chapterTitle: chapter.title,
-      level: level,
+  const navigateToContent = (chapterId, chapterTitle, level) => {
+    router.push({
+      pathname: "/content",
+      params: { chapterId, chapterTitle, level: JSON.stringify(level) }
     });
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <CustomSafeAreaView>
       <ImageBackground
         source={require("../assets/Chapters/bg.png")}
         style={styles.background}
@@ -77,16 +75,25 @@ const Chapters = () => {
                 <Text style={styles.chapterTitle}>{chapter.name}</Text>
                 <View style={styles.levelContainer}>
                   {chapter.levels.map((level) => (
-                    <TouchableOpacity
+                    <Link
                       key={level.id}
-                      style={styles.levelButton}
-                      onPress={() => selectLevel(chapter, level)}
+                      href={{
+                        pathname: "/content",
+                        params: {
+                          chapterId: chapter.id,
+                          chapterTitle: chapter.title,
+                          level: JSON.stringify(level)
+                        }
+                      }}
+                      asChild
                     >
-                      <View style={styles.levelContent}>
-                        {level.is_done ? <DoneIcon /> : <NotDoneIcon />}
-                        <Text style={styles.levelText}>{level.name}</Text>
-                      </View>
-                    </TouchableOpacity>
+                      <TouchableOpacity style={styles.levelButton}>
+                        <View style={styles.levelContent}>
+                          {level.is_done ? <DoneIcon /> : <NotDoneIcon />}
+                          <Text style={styles.levelText}>{level.name}</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </Link>
                   ))}
                 </View>
               </View>
@@ -94,7 +101,7 @@ const Chapters = () => {
           </View>
         )}
       </View>
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

@@ -2,6 +2,7 @@
   "expo": {
     "name": "Belakoo",
     "slug": "Belakoo",
+    "scheme": "Belakoo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/customicon.png",
@@ -26,7 +27,8 @@
       "favicon": "./assets/customfavicon.png"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-router"
     ],
     "extra": {
       "eas": {

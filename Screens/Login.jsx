@@ -4,24 +4,24 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  ImageBackground,
-  Image,
   StyleSheet,
-  ActivityIndicator,
+  Image,
+  ImageBackground,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from "@react-navigation/native";
-import Toast from 'react-native-toast-message';
+import { Link, useRouter } from 'expo-router';
+import CustomSafeAreaView from '../Components/CustomSafeAreaView';
+import Toast from "react-native-toast-message";
 import authService from '../services/authService';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const navigation = useNavigation();
+  const router = useRouter();
 
   const validateInputs = () => {
     if (!email.trim()) {
@@ -57,7 +57,7 @@ const Login = () => {
     setIsLoading(true);
     try {
       await authService.login(email, password);
-      navigation.navigate("Campus");
+      router.replace("/campus");
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -88,11 +88,11 @@ const Login = () => {
   };
 
   return (
-    <ImageBackground
-      source={require("../assets/Login/bg.png")}
-      style={styles.background}
-    >
-      <SafeAreaView style={styles.safeArea}>
+    <CustomSafeAreaView>
+      <ImageBackground
+        source={require("../assets/Login/bg.png")}
+        style={styles.background}
+      >
         <KeyboardAvoidingView 
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.keyboardAvoidingView}
@@ -143,9 +143,8 @@ const Login = () => {
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
-      </SafeAreaView>
-      <Toast />
-    </ImageBackground>
+      </ImageBackground>
+    </CustomSafeAreaView>
   );
 };
 
@@ -175,7 +174,9 @@ const styles = StyleSheet.create({
     width: 225,
     height: 120,
     resizeMode: "contain",
-    marginBottom: 40,
+    position: "absolute",
+    top: 25,
+    margin:"auto"
   },
   loginContainer: {
     width: "100%",

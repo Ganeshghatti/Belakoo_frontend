@@ -6,18 +6,18 @@ import {
   ImageBackground,
   ActivityIndicator,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { Link, useRouter } from 'expo-router';
 import CampusIconSvg from "../assets/icons/CampusIconSvg";
 import DescriptionComponent from "../Components/TextComponents/DescriptionComponent";
 import HeadingComponent from "../Components/TextComponents/HeadingComponent";
-import { SafeAreaView } from "react-native-safe-area-context";
+import CustomSafeAreaView from '../Components/CustomSafeAreaView';
 import CustomHeader from "../Components/CustomHeader";
 import api from '../services/api';
 import Toast from 'react-native-toast-message';
 import TitleComponent from "../Components/TextComponents/TitleComponent";
 
 const Campus = () => {
-  const navigation = useNavigation();
+  const router = useRouter();
   const [campuses, setCampuses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -41,12 +41,8 @@ const Campus = () => {
     }
   };
 
-  const handleNavigate = (campusId) => {
-    navigation.navigate("Subjects", { campusId });
-  };
-
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <CustomSafeAreaView>
       <ImageBackground
         source={require("../assets/Campus/bg.png")}
         style={styles.background}
@@ -61,25 +57,23 @@ const Campus = () => {
             ) : (
               <View style={styles.cardContainer}>
                 {campuses.map((campus) => (
-                  <TouchableOpacity
-                    key={campus.id}
-                    style={styles.campusCard}
-                    onPress={() => handleNavigate(campus.id)}
-                  >
-                    <TitleComponent titleText={campus.name} />
-                    <CampusIconSvg />
-                    <DescriptionComponent
-                      descriptionText={campus.description}
-                      style={{ textAlign: "center" }}
-                    />
-                  </TouchableOpacity>
+                  <Link key={campus.id} href={{ pathname: "/subjects", params: { campusId: campus.id } }} asChild>
+                    <TouchableOpacity style={styles.campusCard}>
+                      <TitleComponent titleText={campus.name} />
+                      <CampusIconSvg />
+                      <DescriptionComponent
+                        descriptionText={campus.description}
+                        style={{ textAlign: "center" }}
+                      />
+                    </TouchableOpacity>
+                  </Link>
                 ))}
               </View>
             )}
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

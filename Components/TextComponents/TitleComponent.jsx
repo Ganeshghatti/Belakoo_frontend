@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "#740000",
     textAlign: "center",
-    // fontFamily: "GothamBold",
+    fontFamily: "gothambold",
   },
 });
 

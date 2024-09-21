@@ -1,5 +1,6 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from 'expo-router';
 
 const API_URL = "https://belakoo-backend.onrender.com"; // Replace with your actual backend URL
 
@@ -19,6 +20,7 @@ const authService = {
   logout: async () => {
     await AsyncStorage.removeItem("userToken");
     await AsyncStorage.removeItem("refreshToken");
+    router.replace('/login');
   },
 
   refreshToken: async () => {

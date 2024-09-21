@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, ImageBackground, TouchableOpacity, Text, Modal } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ImageBackground,
+  Modal,
+} from "react-native";
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { WebView } from "react-native-webview";
-import { useRoute, useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import CustomSafeAreaView from '../Components/CustomSafeAreaView';
 import api from "../services/api";
 import Toast from "react-native-toast-message";
 
 const Content = () => {
-  const route = useRoute();
-  const navigation = useNavigation();
-  const { chapterId, chapterTitle, level } = route.params;
-  const [isDone, setIsDone] = useState(level.is_done);
+  const router = useRouter();
+  const params = useLocalSearchParams();
+  const { chapterId, chapterTitle, level } = params;
+  const parsedLevel = JSON.parse(level);
+  const [isDone, setIsDone] = useState(parsedLevel.is_done);
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
@@ -50,14 +58,14 @@ const Content = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <CustomSafeAreaView>
       <ImageBackground
         source={require("../assets/Content/bg.png")}
         style={styles.background}
       />
       <View style={styles.content}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
           <Text style={styles.title}>{chapterTitle}</Text>
@@ -107,7 +115,7 @@ const Content = () => {
         </View>
       </Modal>
       <Toast />
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 
