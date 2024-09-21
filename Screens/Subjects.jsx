@@ -6,13 +6,13 @@ import {
   ActivityIndicator,
   ImageBackground,
 } from "react-native";
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from "expo-router";
 import Cube from "../assets/3D/cube";
 import TitleContainer from "../Components/TitleContainer";
 import CustomHeader from "../Components/CustomHeader";
 import api from "../services/api";
 import Toast from "react-native-toast-message";
-import CustomSafeAreaView from '../Components/CustomSafeAreaView';
+import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 
 const Subjects = () => {
   const { campusId } = useLocalSearchParams();
@@ -44,29 +44,30 @@ const Subjects = () => {
       <ImageBackground
         source={require("../assets/Landing/bg.png")}
         style={styles.background}
-      />
-      <View style={styles.content}>
-        <CustomHeader />
-        {isLoading ? (
-          <ActivityIndicator
-            size="large"
-            color="#740000"
-            style={styles.loader}
-          />
-        ) : (
-          <>
-            <TitleContainer
-              title="Choose your Subject"
-              subtitle="Choose your subject by turning the cube"
+      >
+        <View style={styles.content}>
+          <CustomHeader />
+          {isLoading ? (
+            <ActivityIndicator
+              size="large"
+              color="#740000"
+              style={styles.loader}
             />
-            <View style={styles.canvasContainer}>
-              {campusData && campusData.subjects && (
-                <Cube subjects={campusData.subjects} />
-              )}
-            </View>
-          </>
-        )}
-      </View>
+          ) : (
+            <>
+              <TitleContainer
+                title="Choose your Subject"
+                subtitle="Choose your subject by turning the cube"
+              />
+              <View style={styles.canvasContainer}>
+                {campusData && campusData.subjects && (
+                  <Cube subjects={campusData.subjects} />
+                )}
+              </View>
+            </>
+          )}
+        </View>
+      </ImageBackground>
     </CustomSafeAreaView>
   );
 };
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-    position: "absolute",
+    position: "fixed",
     top: 0,
     left: 0,
     right: 0,

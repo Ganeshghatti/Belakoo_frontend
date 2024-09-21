@@ -55,33 +55,33 @@ const Content = () => {
       <ImageBackground
         source={require("../assets/Content/bg.png")}
         style={styles.background}
-      />
-      <View style={styles.content}>
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => router.back()}
-            style={styles.backButton}
-          >
-            <Text style={styles.backButtonText}>←</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.markButton, isDone && styles.markButtonDone]}
-            onPress={handleMarkDone}
-          >
-            <Text style={styles.markButtonText}>
-              {isDone ? "Mark as not done" : "Mark as done"}
-            </Text>
-          </TouchableOpacity>
+      >
+        <View style={styles.content}>
+          <View style={styles.header}>
+            <TouchableOpacity
+              onPress={() => router.back()}
+              style={styles.backButton}
+            >
+              <Text style={styles.backButtonText}>←</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.markButton, isDone && styles.markButtonDone]}
+              onPress={handleMarkDone}
+            >
+              <Text style={styles.markButtonText}>
+                {isDone ? "Mark as not done" : "Mark as done"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.contentContainer}>
+            <WebView
+              source={{ uri: parsedLevel.pdflink }}
+              style={styles.webview}
+              scalesPageToFit={true}
+            />
+          </View>
         </View>
-        <View style={styles.contentContainer}>
-          <WebView
-            source={{ uri: parsedLevel.pdflink }}
-            style={styles.webview}
-            scalesPageToFit={true}
-          />
-        </View>
-      </View>
-
+      </ImageBackground>
       <Modal
         transparent={true}
         visible={showPopup}
@@ -121,9 +121,13 @@ const styles = StyleSheet.create({
   },
   background: {
     flex: 1,
-    position: "absolute",
     width: "100%",
     height: "100%",
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   content: {
     flex: 1,
@@ -213,14 +217,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   doneButtonGreen: {
-    backgroundColor: 'green',
+    backgroundColor: "green",
   },
   doneButtonGray: {
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
   },
   doneButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
 });
 

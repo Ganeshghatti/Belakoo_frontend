@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Platform, StatusBar } from 'react-native';
+import { SafeAreaView, StyleSheet, Platform, StatusBar } from 'react-native';
 
 const CustomSafeAreaView = ({ children, style }) => {
   return (
-    <View style={[styles.container, style]}>
+    <SafeAreaView style={[styles.container, style]}>
       {children}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-    backgroundColor: 'transparent', // Make the background transparent
+    backgroundColor: '#FDDEBC', // Set the default background color
   },
 });
 

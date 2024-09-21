@@ -46,40 +46,41 @@ const Campus = () => {
       <ImageBackground
         source={require("../assets/Campus/bg.png")}
         style={styles.background}
-      />
-      <View style={styles.content}>
-        <CustomHeader />
-        <View style={styles.wrapper}>
-          <View style={styles.campusContainer}>
-            <HeadingComponent headingText="Choose your campus" />
-            {isLoading ? (
-              <ActivityIndicator size="large" color="#740000" />
-            ) : (
-              <View style={styles.cardContainer}>
-                {campuses.map((campus) => (
-                  <Link
-                    key={campus.id}
-                    href={{
-                      pathname: "/subjects",
-                      params: { campusId: campus.id },
-                    }}
-                    asChild
-                  >
-                    <TouchableOpacity style={styles.campusCard}>
-                      <TitleComponent titleText={campus.name} />
-                      <CampusIconSvg />
-                      <DescriptionComponent
-                        descriptionText={campus.description}
-                        style={{ textAlign: "center" }}
-                      />
-                    </TouchableOpacity>
-                  </Link>
-                ))}
-              </View>
-            )}
+      >
+        <View style={styles.content}>
+          <CustomHeader />
+          <View style={styles.wrapper}>
+            <View style={styles.campusContainer}>
+              <HeadingComponent headingText="Choose your campus" />
+              {isLoading ? (
+                <ActivityIndicator size="large" color="#740000" />
+              ) : (
+                <View style={styles.cardContainer}>
+                  {campuses.map((campus) => (
+                    <Link
+                      key={campus.id}
+                      href={{
+                        pathname: "/subjects",
+                        params: { campusId: campus.id },
+                      }}
+                      asChild
+                    >
+                      <TouchableOpacity style={styles.campusCard}>
+                        <TitleComponent titleText={campus.name} />
+                        <CampusIconSvg />
+                        <DescriptionComponent
+                          descriptionText={campus.description}
+                          style={{ textAlign: "center" }}
+                        />
+                      </TouchableOpacity>
+                    </Link>
+                  ))}
+                </View>
+              )}
+            </View>
           </View>
         </View>
-      </View>
+      </ImageBackground>
     </CustomSafeAreaView>
   );
 };
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-    position: "absolute",
+    position: "fixed",
     top: 0,
     left: 0,
     right: 0,
