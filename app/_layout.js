@@ -2,13 +2,13 @@ import { Slot } from "expo-router";
 import { useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
-import { Text } from 'react-native';
+import { Text } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [fontsLoaded, error] = useFonts({
-    "gothambold": require("../assets/fonts/GothamMedium.ttf"),
+    gothambold: require("../assets/fonts/GothamMedium.ttf"),
   });
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function RootLayout() {
 
   // Set the default font family for all Text components
   Text.defaultProps = Text.defaultProps || {};
-  Text.defaultProps.style = { fontFamily: 'gothambold' };
+  Text.defaultProps.style = { fontFamily: "gothambold" };
 
   return <Slot />;
 }
