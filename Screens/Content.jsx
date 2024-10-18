@@ -6,20 +6,46 @@ import {
   TouchableOpacity,
   ImageBackground,
   Modal,
+  ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
-import { WebView } from "react-native-webview";
 import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 import api from "../services/api";
 import Toast from "react-native-toast-message";
+import { Ionicons } from '@expo/vector-icons';
 
 const Content = () => {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const { chapterId, chapterTitle, level } = params;
-  const parsedLevel = JSON.parse(level);
-  const [isDone, setIsDone] = useState(parsedLevel.is_done);
+  const { lessonId, lessonCode } = params;
+  const [lessonData, setLessonData] = useState(null);
+  const [isDone, setIsDone] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchLessonDetails();
+  }, []);
+
+  const fetchLessonDetails = async () => {
+    try {
+      const response = await api.get(`/api/lessons/${lessonCode}/`);
+      setLessonData(response.data);
+      setIsDone(response.data.is_done);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching lesson details:", error);
+      console.error("Error response:", error.response?.data);
+      console.error("Requested URL:", error.config?.url);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Failed to load lesson details. Please try again.",
+      });
+      setIsLoading(false);
+    }
+  };
 
   const handleMarkDone = async () => {
     setShowPopup(true);
@@ -28,27 +54,75 @@ const Content = () => {
   const confirmMarkDone = async () => {
     try {
       const endpoint = isDone ? "mark-not-done" : "mark-done";
-      await api.post(`/api/levels/${parsedLevel.id}/${endpoint}/`);
+      await api.post(`/api/lessons/${lessonId}/${endpoint}/`);
       setIsDone(!isDone);
 
       setShowPopup(false);
       Toast.show({
         type: "success",
         text1: "Success",
-        text2: `Level marked as ${isDone ? "not done" : "done"}.`,
+        text2: `Lesson marked as ${isDone ? "not done" : "done"}.`,
         position: "bottom",
       });
     } catch (error) {
-      console.error("Error marking level:", error);
+      console.error("Error marking lesson:", error);
       setShowPopup(false);
       Toast.show({
         type: "error",
         text1: "Error",
-        text2: "Failed to update level status. Please try again.",
+        text2: "Failed to update lesson status. Please try again.",
         position: "bottom",
       });
     }
   };
+
+  const renderSection = (title, content) => {
+    if (content && typeof content === 'string' && content.trim() !== '') {
+      return (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{title}</Text>
+          <Text style={styles.sectionContent}>{content}</Text>
+        </View>
+      );
+    }
+    return null;
+  };
+
+  const renderJsonSection = (title, content) => {
+    if (content && typeof content === 'object' && Object.keys(content).length > 0) {
+      return (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{title}</Text>
+          {Object.entries(content).map(([key, value]) => (
+            <View key={key} style={styles.jsonItem}>
+              <Text style={styles.jsonKey}>{key}:</Text>
+              <Text style={styles.jsonValue}>{value}</Text>
+            </View>
+          ))}
+        </View>
+      );
+    }
+    return null;
+  };
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#740000" />
+      </View>
+    );
+  }
+
+  if (!lessonData) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Failed to load lesson data. Please try again.</Text>
+        <TouchableOpacity onPress={fetchLessonDetails} style={styles.retryButton}>
+          <Text style={styles.retryButtonText}>Retry</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <CustomSafeAreaView>
@@ -62,7 +136,7 @@ const Content = () => {
               onPress={() => router.back()}
               style={styles.backButton}
             >
-              <Text style={styles.backButtonText}>←</Text>
+              <Ionicons name="arrow-back" size={24} color="#740000" />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.markButton, isDone && styles.markButtonDone]}
@@ -73,38 +147,44 @@ const Content = () => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.contentContainer}>
-            <WebView
-              source={{ uri: parsedLevel.pdflink }}
-              style={styles.webview}
-              scalesPageToFit={true}
-            />
-          </View>
+          <ScrollView style={styles.contentContainer}>
+            <Text style={styles.lessonTitle}>{lessonData.name || 'Untitled Lesson'}</Text>
+            {renderSection("Objective", lessonData.objective)}
+            {renderSection("Duration", lessonData.duration)}
+            {renderSection("Specific Learning Outcome", lessonData.specific_learning_outcome)}
+            {renderSection("Behavioural Outcome", lessonData.behavioural_outcome)}
+            {renderSection("Materials Required", lessonData.materials_required)}
+            {renderJsonSection("Activate", lessonData.activate)}
+            {renderJsonSection("Acquire", lessonData.acquire)}
+            {renderJsonSection("Apply", lessonData.apply)}
+            {renderJsonSection("Assess", lessonData.assess)}
+          </ScrollView>
         </View>
       </ImageBackground>
       <Modal
         transparent={true}
         visible={showPopup}
         onRequestClose={() => setShowPopup(false)}
+        animationType="fade"
       >
         <View style={styles.popupContainer}>
           <View style={styles.popup}>
+            <Text style={styles.popupTitle}>Confirm Action</Text>
             <Text style={styles.popupText}>
-              Are you sure you want to mark this level as{" "}
-              {isDone ? "not done" : "done"}?
+              Are you sure you want to mark this lesson as {isDone ? "not done" : "done"}?
             </Text>
             <View style={styles.popupButtonContainer}>
               <TouchableOpacity
                 style={[styles.popupButton, styles.cancelButton]}
                 onPress={() => setShowPopup(false)}
               >
-                <Text style={styles.popupButtonText}>Cancel</Text>
+                <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.popupButton, styles.confirmButton]}
                 onPress={confirmMarkDone}
               >
-                <Text style={styles.popupButtonText}>Confirm</Text>
+                <Text style={styles.confirmButtonText}>Confirm</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -116,115 +196,164 @@ const Content = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
   background: {
     flex: 1,
     width: "100%",
     height: "100%",
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
   },
   content: {
     flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 10,
-    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+    backgroundColor: 'white',
   },
   backButton: {
     padding: 5,
   },
-  backButtonText: {
-    fontSize: 24,
-    color: "#740000",
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#740000",
-    flex: 1,
-    textAlign: "center",
-  },
   markButton: {
-    backgroundColor: "#169331",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    backgroundColor: '#740000',
+    paddingVertical: 8,
+    paddingHorizontal: 15,
     borderRadius: 20,
+    elevation: 2,
   },
   markButtonDone: {
-    backgroundColor: "#740000",
+    backgroundColor: '#4CAF50',
   },
   markButtonText: {
-    color: "white",
+    color: 'white',
     fontSize: 14,
+    fontWeight: 'bold',
   },
   contentContainer: {
-    flex: 1,
+    padding: 20,
   },
-  webview: {
-    flex: 1,
+  lessonTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#740000',
+  },
+  section: {
+    marginBottom: 25,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 15,
+    elevation: 2,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#740000',
+  },
+  sectionContent: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: '#333',
+  },
+  jsonItem: {
+    marginBottom: 10,
+  },
+  jsonKey: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#740000',
+  },
+  jsonValue: {
+    fontSize: 16,
+    marginLeft: 10,
+    color: '#333',
   },
   popupContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   popup: {
-    backgroundColor: "white",
-    padding: 20,
+    backgroundColor: 'white',
     borderRadius: 10,
-    alignItems: "center",
-    width: "80%",
+    padding: 20,
+    width: '80%',
+    alignItems: 'center',
+    elevation: 5,
+  },
+  popupTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    color: '#740000',
   },
   popupText: {
     fontSize: 16,
+    textAlign: 'center',
     marginBottom: 20,
-    textAlign: "center",
+    color: '#333',
   },
   popupButtonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
   },
   popupButton: {
-    paddingHorizontal: 20,
     paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 5,
-    width: "45%",
+    minWidth: 100,
+    alignItems: 'center',
   },
   cancelButton: {
-    backgroundColor: "#808080",
+    backgroundColor: '#f0f0f0',
+    marginRight: 10,
   },
   confirmButton: {
-    backgroundColor: "#740000",
+    backgroundColor: '#740000',
+    marginLeft: 10,
   },
-  popupButtonText: {
-    color: "white",
+  cancelButtonText: {
+    color: '#333',
     fontSize: 16,
-    textAlign: "center",
+    fontWeight: 'bold',
   },
-  doneButton: {
+  confirmButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  errorText: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
+    color: '#333',
+  },
+  retryButton: {
+    backgroundColor: '#740000',
     padding: 10,
     borderRadius: 5,
   },
-  doneButtonGreen: {
-    backgroundColor: "green",
-  },
-  doneButtonGray: {
-    backgroundColor: "gray",
-  },
-  doneButtonText: {
-    color: "white",
-    fontWeight: "bold",
+  retryButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

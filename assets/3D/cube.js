@@ -63,7 +63,7 @@ const CubeComponent = ({ subjects = [] }) => {
     if (faceIndex < subjects.length) {
       const selectedSubject = subjects[faceIndex];
       router.push({
-        pathname: "/chapters",
+        pathname: "/grades",
         params: { 
           subjectId: selectedSubject.id,
           subjectName: selectedSubject.name

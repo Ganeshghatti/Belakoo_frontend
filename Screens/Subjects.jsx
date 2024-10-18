@@ -30,10 +30,11 @@ const Subjects = () => {
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching campus details:", error);
+      console.error("Error response:", error.response?.data);
       Toast.show({
         type: "error",
         text1: "Error",
-        text2: "Failed to load campus details. Please try again.",
+        text2: "Failed to load subjects. Please try again.",
       });
       setIsLoading(false);
     }

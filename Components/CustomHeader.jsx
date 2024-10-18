@@ -1,32 +1,68 @@
 // CustomHeader.js
 import React from "react";
-import { useRouter, usePathname } from 'expo-router';
+import { useRouter, usePathname, useLocalSearchParams } from "expo-router";
 import Breadcrumbs from "./BreadCrumbs";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 
 const CustomHeader = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const params = useLocalSearchParams();
 
-  // Define breadcrumb items based on the current route
+  console.log("CustomHeader - Current params:", params);
+  console.log("CustomHeader - Current pathname:", pathname);
+
   const getBreadcrumbItems = () => {
-    switch (pathname) {
-      case "/campus":
-        return [{ key: "campus", label: "Campus", route: "/campus" }];
-      case "/subjects":
-        return [
-          { key: "campus", label: "Campus", route: "/campus" },
-          { key: "subjects", label: "Subjects", route: "/subjects" },
-        ];
-      case "/chapters":
-        return [
-          { key: "campus", label: "Campus", route: "/campus" },
-          { key: "subjects", label: "Subjects", route: "/subjects" },
-          { key: "chapters", label: "Chapters", route: "/chapters" },
-        ];
-      default:
-        return [];
+    const items = [{ key: "campus", label: "Campus", route: "/campus" }];
+
+    if (
+      pathname === "/subjects" ||
+      pathname === "/grades" ||
+      pathname === "/chapters"
+    ) {
+      items.push({
+        key: "subjects",
+        label: "Subjects",
+        route: {
+          pathname: "/subjects",
+          params: { campusId: params.campusId },
+        },
+      });
     }
+
+    if (pathname === "/grades" || pathname === "/chapters") {
+      items.push({
+        key: "grades",
+        label: "Grades",
+        route: {
+          pathname: "/grades",
+          params: {
+            campusId: params.campusId,
+            subjectId: params.subjectId,
+            subjectName: params.subjectName,
+          },
+        },
+      });
+    }
+
+    if (pathname === "/chapters") {
+      items.push({
+        key: "chapters",
+        label: "Chapters",
+        route: {
+          pathname: "/chapters",
+          params: {
+            campusId: params.campusId,
+            subjectId: params.subjectId,
+            subjectName: params.subjectName,
+            gradeId: params.gradeId,
+            gradeName: params.gradeName,
+          },
+        },
+      });
+    }
+
+    return items;
   };
 
   return (
@@ -39,13 +75,13 @@ const CustomHeader = () => {
 
 const styles = StyleSheet.create({
   header: {
-    width: "100%",
-    display: "flex",
-    backgroundColor: "transparent",
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    flexDirection: "column",
+    alignItems: "flex-start",
+    padding: 10,
   },
-  logo: {},
+  logo: {
+    marginRight: 10,
+  },
 });
 
 export default CustomHeader;

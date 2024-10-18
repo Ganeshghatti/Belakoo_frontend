@@ -1,16 +1,29 @@
-// Breadcrumbs.js
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Link, useRouter } from 'expo-router';
 
 const Breadcrumbs = ({ items }) => {
+  const router = useRouter();
+
+  const handleNavigation = (route) => {
+    console.log("Navigating to:", route);
+    if (typeof route === 'string') {
+      router.push(route);
+    } else {
+      router.push({
+        pathname: route.pathname,
+        params: route.params
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
       {items.map((item, index) => (
         <React.Fragment key={item.key}>
-          <Link href={item.route} asChild>
+          <TouchableOpacity onPress={() => handleNavigation(item.route)}>
             <Text style={styles.text}>{item.label}</Text>
-          </Link>
+          </TouchableOpacity>
           {index < items.length - 1 && <Text style={styles.separator}> {'>'} </Text>}
         </React.Fragment>
       ))}

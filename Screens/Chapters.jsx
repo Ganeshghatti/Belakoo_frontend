@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
-  Image,
   Text,
   TouchableOpacity,
   ActivityIndicator,
   ImageBackground,
+  ScrollView,
 } from "react-native";
 import { Link, useRouter, useLocalSearchParams } from 'expo-router';
 import CustomHeader from "../Components/CustomHeader";
@@ -18,22 +18,23 @@ import Toast from "react-native-toast-message";
 import CustomSafeAreaView from '../Components/CustomSafeAreaView';
 
 const Chapters = () => {
-  const { subjectId, subjectName } = useLocalSearchParams();
+  const { gradeId, gradeName } = useLocalSearchParams();
   const router = useRouter();
   const [chapters, setChapters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchSubjectDetails();
+    fetchGradeDetails();
   }, []);
 
-  const fetchSubjectDetails = async () => {
+  const fetchGradeDetails = async () => {
     try {
-      const response = await api.get(`/api/subjects/${subjectId}/`);
+      const response = await api.get(`/api/grades/${gradeId}/`);
+      console.log("chapters",response.data.chapters,response.data.chapters[0].lessons)
       setChapters(response.data.chapters);
       setIsLoading(false);
     } catch (error) {
-      console.error("Error fetching subject details:", error);
+      console.error("Error fetching grade details:", error);
       Toast.show({
         type: "error",
         text1: "Error",
@@ -41,13 +42,6 @@ const Chapters = () => {
       });
       setIsLoading(false);
     }
-  };
-
-  const navigateToContent = (chapterId, chapterTitle, level) => {
-    router.push({
-      pathname: "/content",
-      params: { chapterId, chapterTitle, level: JSON.stringify(level) }
-    });
   };
 
   return (
@@ -59,8 +53,8 @@ const Chapters = () => {
       <View style={styles.content}>
         <CustomHeader />
         <TitleContainer
-          title={subjectName || "Select Chapters"}
-          subtitle="Select chapters and levels"
+          title="Select Chapters"
+          subtitle="Select chapters and lessons"
         />
         {isLoading ? (
           <ActivityIndicator
@@ -69,28 +63,27 @@ const Chapters = () => {
             style={styles.loader}
           />
         ) : (
-          <View style={styles.chapterContainer}>
+          <ScrollView contentContainerStyle={styles.chapterContainer}>
             {chapters.map((chapter) => (
               <View key={chapter.id} style={styles.chapterCard}>
                 <Text style={styles.chapterTitle}>{chapter.name}</Text>
-                <View style={styles.levelContainer}>
-                  {chapter.levels.map((level) => (
+                <View style={styles.lessonContainer}>
+                  {chapter.lessons.map((lesson) => (
                     <Link
-                      key={level.id}
+                      key={lesson.id}
                       href={{
                         pathname: "/content",
                         params: {
-                          chapterId: chapter.id,
-                          chapterTitle: chapter.title,
-                          level: JSON.stringify(level)
+                          lessonId: lesson.id,
+                          lessonCode: lesson.lesson_code
                         }
                       }}
                       asChild
                     >
-                      <TouchableOpacity style={styles.levelButton}>
-                        <View style={styles.levelContent}>
-                          {level.is_done ? <DoneIcon /> : <NotDoneIcon />}
-                          <Text style={styles.levelText}>{level.name}</Text>
+                      <TouchableOpacity style={styles.lessonButton}>
+                        <View style={styles.lessonContent}>
+                          {lesson.is_done ? <DoneIcon /> : <NotDoneIcon />}
+                          <Text style={styles.lessonText}>{lesson.name}</Text>
                         </View>
                       </TouchableOpacity>
                     </Link>
@@ -98,7 +91,7 @@ const Chapters = () => {
                 </View>
               </View>
             ))}
-          </View>
+          </ScrollView>
         )}
       </View>
     </CustomSafeAreaView>
@@ -154,18 +147,18 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     color: "#740000",
   },
-  levelContainer: {
+  lessonContainer: {
     display: "flex",
   },
-  levelButton: {
+  lessonButton: {
     display: "flex",
   },
-  levelContent: {
+  lessonContent: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 1,
   },
-  levelText: {
+  lessonText: {
     color: "#740000",
     fontWeight: "400",
     fontSize: 12,
