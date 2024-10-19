@@ -7,6 +7,9 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
+
+import * as Asset from "expo-asset";
+
 import DescriptionComponent from "../Components/TextComponents/DescriptionComponent";
 import { LinearGradient } from "expo-linear-gradient"; // Import LinearGradient from expo-linear-gradient
 import TitleComponent from "../Components/TextComponents/TitleComponent";
@@ -14,42 +17,61 @@ import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 import { Link, useRouter } from "expo-router";
 
 const Landing = () => {
-  const router = useRouter();
-
   return (
     <CustomSafeAreaView>
       <ImageBackground
-        source={require("../assets/Landing/bg.png")}
+        source={require("../assets/Landing/kids.png")}
         style={styles.background}
       />
       <View style={styles.content}>
-        <Image source={require("../assets/logo.png")} style={styles.logo} />
         <View style={styles.mainContainer}>
-          <Image
-            source={require("../assets/Landing/illustration.png")}
-            style={styles.illustration}
-          />
           <View style={styles.subContainer}>
-            <View style={styles.cardsContainer}>
-              <View style={styles.card}>
-                <TitleComponent titleText="What" />
-                <DescriptionComponent descriptionText="Lorem ipsum dolor sit amet. Et inventore illum quo veniam illum quo fugiat nostrum eos nemo veritatis pariatur" />
-                <TouchableOpacity>
-                  <Text style={styles.cardLink}>Know More&gt;</Text>
-                </TouchableOpacity>
+            <View
+              style={styles.cardsContainer}
+              className="flex flex-wrap gap-2"
+            >
+              <View
+                style={styles.card}
+                className="flex items-center justify-center h-40"
+              >
+                <Image
+                  source={require("../assets/Landing/educate.png")}
+                  className="h-14 w-14"
+                />
+                <TitleComponent titleText="Educate" />
               </View>
-
-              <View style={styles.card}>
-                <TitleComponent titleText="What" />
-                <DescriptionComponent descriptionText="Lorem ipsum dolor sit amet. Et inventore illum quo veniam illum quo fugiat nostrum eos nemo veritatis pariatur" />
-                <TouchableOpacity>
-                  <Text style={styles.cardLink}>Know More&gt;</Text>
-                </TouchableOpacity>
+              <View
+                style={styles.card}
+                className="flex items-center justify-center h-40"
+              >
+                <Image
+                  source={require("../assets/Landing/empower.png")}
+                  className="h-14 w-14"
+                />
+                <TitleComponent titleText="Educate" />
+              </View>
+              <View
+                style={styles.card}
+                className="flex items-center justify-center h-40"
+              >
+                <Image
+                  source={require("../assets/Landing/intel.png")}
+                  className="h-14 w-14"
+                />
+                <TitleComponent titleText="  Instil Curiosity" />
+              </View>
+              <View
+                style={styles.card}
+                className="flex items-center justify-center h-40"
+              >
+                <Image
+                  source={require("../assets/Landing/smile.png")}
+                  className="h-16 w-12"
+                />
+                <TitleComponent titleText=" Create Smiles" />
               </View>
             </View>
-            <Text style={styles.loginText}>
-              Login to get the best of our services
-            </Text>
+
             <Link href="/login" asChild>
               <TouchableOpacity style={styles.loginButton}>
                 <Text style={styles.loginButtonText}>Log in</Text>
@@ -70,7 +92,7 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     width: "100%",
-    height: "100%",
+    height: "100vh",
     position: "absolute",
     top: 0,
     left: 0,
@@ -105,7 +127,7 @@ const styles = StyleSheet.create({
     width: "100%",
     bottom: 0,
     zIndex: 1,
-    backgroundColor: "white",
+
     paddingVertical: 28,
     paddingHorizontal: 14,
     flexDirection: "column",
@@ -127,7 +149,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 10,
     elevation: 5,
-    gap:4
+    gap: 4,
   },
   cardLink: {
     fontSize: 14,

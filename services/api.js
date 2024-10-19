@@ -1,7 +1,7 @@
-import axios from 'axios';
-import authService from './authService';
+import axios from "axios";
+import authService from "./authService";
 
-const API_URL = 'https://belakoo-backend.onrender.com'; // Replace with your actual backend URL
+const API_URL = "https://belakoo-backend.onrender.com"; // Replace with your actual backend URL
 
 const api = axios.create({
   baseURL: API_URL,
@@ -11,7 +11,7 @@ api.interceptors.request.use(
   async (config) => {
     const token = await authService.getToken();
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
@@ -26,7 +26,7 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       try {
         const { access } = await authService.refreshToken();
-        axios.defaults.headers.common['Authorization'] = `Bearer ${access}`;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
         return api(originalRequest);
       } catch (refreshError) {
         // If refresh token fails, logout the user

@@ -7,9 +7,9 @@ const TitleComponent = ({ titleText }) => {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "700",
-    color: "#740000",
+    color: "#F77904",
     textAlign: "center",
     fontFamily: "gothambold",
   },
