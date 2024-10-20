@@ -58,7 +58,7 @@ const Login = () => {
     try {
       await authService.login(email, password);
       console.log("Hello World");
-      router.replace("/campus");
+      router.replace("/instructions");
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code

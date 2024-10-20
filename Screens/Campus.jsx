@@ -6,6 +6,9 @@ import {
   ImageBackground,
   ActivityIndicator,
 } from "react-native";
+
+import { Text } from "react-native";
+
 import { Link, useRouter } from "expo-router";
 import CampusIconSvg from "../assets/icons/CampusIconSvg";
 import DescriptionComponent from "../Components/TextComponents/DescriptionComponent";
@@ -14,10 +17,8 @@ import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 import CustomHeader from "../Components/CustomHeader";
 import api from "../services/api";
 import Toast from "react-native-toast-message";
-import TitleComponent from "../Components/TextComponents/TitleComponent";
 
 const Campus = () => {
-  const router = useRouter();
   const [campuses, setCampuses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -43,15 +44,18 @@ const Campus = () => {
 
   return (
     <CustomSafeAreaView>
-      <ImageBackground
-        source={require("../assets/Campus/bg.png")}
-        style={styles.background}
-      >
-        <View style={styles.content}>
-          <CustomHeader />
+      <View style={styles.content} className="bg-[#F56E00]/70">
+        <ImageBackground
+          source={require("../assets/Content/bg2.png")}
+          style={styles.background}
+        >
+          <View className="flex items-center justify-center  bg-[#F56E00] py-5 mt-0">
+            <Text className="text-2xl font-bold text-white">
+              Choose your Campus
+            </Text>
+          </View>
           <View style={styles.wrapper}>
             <View style={styles.campusContainer}>
-              <HeadingComponent headingText="Choose your campus" />
               {isLoading ? (
                 <ActivityIndicator size="large" color="#740000" />
               ) : (
@@ -65,13 +69,13 @@ const Campus = () => {
                       }}
                       asChild
                     >
-                      <TouchableOpacity style={styles.campusCard}>
-                        <TitleComponent titleText={campus.name} />
-                        <CampusIconSvg />
-                        <DescriptionComponent
-                          descriptionText={campus.description}
-                          style={{ textAlign: "center" }}
-                        />
+                      <TouchableOpacity className="bg-white rounded-xl shadow-xl border border-white px-8 py-16">
+                        <Text className="text-[#F56E00] text-2xl font-bold text-center">
+                          {campus.name}
+                        </Text>
+                        <Text className="text-[#F56E00] font-bold text-center">
+                          {campus.description}
+                        </Text>
                       </TouchableOpacity>
                     </Link>
                   ))}
@@ -79,8 +83,8 @@ const Campus = () => {
               )}
             </View>
           </View>
-        </View>
-      </ImageBackground>
+        </ImageBackground>
+      </View>
     </CustomSafeAreaView>
   );
 };
@@ -90,6 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FDDEBC",
   },
+
   background: {
     flex: 1,
     width: "100%",
@@ -106,24 +111,18 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "starts",
     alignItems: "center",
     paddingBottom: 60, // Adjust this value to account for the status bar and header
   },
   campusContainer: {
     width: "95%",
-    backgroundColor: "white",
     paddingVertical: 44,
     borderRadius: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 9, height: 9 },
-    shadowOpacity: 0.15,
-    shadowRadius: 9.6,
-    elevation: 5,
   },
   cardContainer: {
     flexDirection: "row",
-    marginTop: 30,
+    marginTop: 0,
     justifyContent: "space-around",
     width: "100%",
   },
