@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, ActivityIndicator, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ImageBackground,
+  ActivityIndicator,
+  ScrollView,
+} from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 import CustomHeader from "../Components/CustomHeader";
@@ -8,11 +16,13 @@ import api from "../services/api";
 import Toast from "react-native-toast-message";
 
 const Grades = () => {
- const { subjectId, subjectName } = useLocalSearchParams();
+  const { subjectId, subjectName } = useLocalSearchParams();
 
   const router = useRouter();
   const [grades, setGrades] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [gradeTab, setGradeTab] = useState(false);
 
   useEffect(() => {
     fetchGrades();
@@ -34,6 +44,10 @@ const Grades = () => {
     }
   };
 
+  const fetchProf = async () => {
+    return;
+  };
+
   return (
     <CustomSafeAreaView>
       <ImageBackground
@@ -41,27 +55,46 @@ const Grades = () => {
         style={styles.background}
       >
         <View style={styles.content}>
-          <CustomHeader />
-          <TitleContainer
-            title="Choose your Grade"
-            subtitle="Select your grade to view chapters"
-          />
+          <View className="flex items-center justify-center bg-[#F56E00] py-5 mt-0">
+            <Text className="text-2xl font-bold text-white">
+              Select the Grade
+            </Text>
+          </View>
           {isLoading ? (
-            <ActivityIndicator size="large" color="#740000" style={styles.loader} />
+            <ActivityIndicator
+              size="large"
+              color="#740000"
+              style={styles.loader}
+            />
           ) : (
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
-              {grades.map((grade) => (
-                <TouchableOpacity
-                  key={grade.id}
-                  style={styles.gradeCard}
-                  onPress={() => router.push({
-                    pathname: "/chapters",
-                    params: { gradeId: grade.id, gradeName: grade.name }
-                  })}
+              <TouchableOpacity
+                onPress={() => setGradeTab(!gradeTab)}
+                className="bg-white  w-64 h-16 flex items-center justify-center border border-white rounded-xl"
+              >
+                <Text className="text-[#F56E00] font-semibold text-2xl">
+                  Select
+                </Text>
+              </TouchableOpacity>
+
+              {gradeTab && (
+                <ScrollView
+                  className="bg-white border mt-5 rounded-lg border-white h-36"
+                  showsVerticalScrollIndicator={false}
                 >
-                  <Text style={styles.gradeName}>{grade.name}</Text>
-                </TouchableOpacity>
-              ))}
+                  {grades.map((grade) => (
+                    <TouchableOpacity
+                      key={grade.id}
+                      className="bg-white border-b border-b-black/10 mb-2 w-64 h-16 flex items-center justify-center rounded-xl"
+                      onPress={fetchProf}
+                    >
+                      <Text className="text-black font-semibold text-2xl">
+                        {grade.name}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              )}
             </ScrollView>
           )}
         </View>
@@ -80,27 +113,25 @@ const styles = StyleSheet.create({
   },
   loader: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   scrollViewContent: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 20,
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    justifyContent: "center",
     paddingHorizontal: 10,
-    flexDirection: 'row',
   },
   gradeCard: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
     padding: 20,
-    width: '35%',
+    width: "35%",
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: '#979292',
+    borderColor: "#979292",
     marginBottom: 20,
     shadowColor: "#000",
     shadowOffset: {
@@ -113,8 +144,8 @@ const styles = StyleSheet.create({
   },
   gradeName: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
 });
 

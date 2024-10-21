@@ -1,6 +1,6 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router } from 'expo-router';
+import { router } from "expo-router";
 
 const API_URL = "https://belakoo-backend.onrender.com"; // For Android emulator
 
@@ -14,13 +14,14 @@ const authService = {
       await AsyncStorage.setItem("userToken", response.data.access);
       await AsyncStorage.setItem("refreshToken", response.data.refresh);
     }
+    console.log(response.data);
     return response.data;
   },
 
   logout: async () => {
     await AsyncStorage.removeItem("userToken");
     await AsyncStorage.removeItem("refreshToken");
-    router.replace('/login');
+    router.replace("/login");
   },
 
   refreshToken: async () => {

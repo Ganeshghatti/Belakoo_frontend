@@ -8,14 +8,14 @@ import {
   ImageBackground,
   ScrollView,
 } from "react-native";
-import { Link, useRouter, useLocalSearchParams } from 'expo-router';
+import { Link, useRouter, useLocalSearchParams } from "expo-router";
 import CustomHeader from "../Components/CustomHeader";
 import TitleContainer from "../Components/TitleContainer";
 import DoneIcon from "../assets/icons/Done";
 import NotDoneIcon from "../assets/icons/NotDone";
 import api from "../services/api";
 import Toast from "react-native-toast-message";
-import CustomSafeAreaView from '../Components/CustomSafeAreaView';
+import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 
 const Chapters = () => {
   const { gradeId, gradeName } = useLocalSearchParams();
@@ -30,7 +30,11 @@ const Chapters = () => {
   const fetchGradeDetails = async () => {
     try {
       const response = await api.get(`/api/grades/${gradeId}/`);
-      console.log("chapters",response.data.chapters,response.data.chapters[0].lessons)
+      console.log(
+        "chapters",
+        response.data.chapters,
+        response.data.chapters[0].lessons
+      );
       setChapters(response.data.chapters);
       setIsLoading(false);
     } catch (error) {
@@ -47,15 +51,13 @@ const Chapters = () => {
   return (
     <CustomSafeAreaView>
       <ImageBackground
-        source={require("../assets/Chapters/bg.png")}
+        source={require("../assets/Content/bg2.png")}
         style={styles.background}
       />
       <View style={styles.content}>
-        <CustomHeader />
-        <TitleContainer
-          title="Select Chapters"
-          subtitle="Select chapters and lessons"
-        />
+        <View className="flex items-center justify-center bg-[#F56E00] py-5 mt-0">
+          <Text className="text-2xl font-bold text-white">Select Chapters</Text>
+        </View>
         {isLoading ? (
           <ActivityIndicator
             size="large"
@@ -75,8 +77,8 @@ const Chapters = () => {
                         pathname: "/content",
                         params: {
                           lessonId: lesson.id,
-                          lessonCode: lesson.lesson_code
-                        }
+                          lessonCode: lesson.lesson_code,
+                        },
                       }}
                       asChild
                     >

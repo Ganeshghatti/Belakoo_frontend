@@ -57,7 +57,8 @@ const Login = () => {
     setIsLoading(true);
     try {
       await authService.login(email, password);
-      router.replace("/campus");
+      console.log("Hello World");
+      router.replace("/instructions");
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -89,67 +90,60 @@ const Login = () => {
 
   return (
     <CustomSafeAreaView>
-      <ImageBackground
-        source={require("../assets/Login/bg.png")}
-        style={styles.background}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidingView}
       >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.keyboardAvoidingView}
+        <ScrollView
+          contentContainerStyle={styles.scrollViewContent}
+          keyboardShouldPersistTaps="handled"
         >
-          <ScrollView
-            contentContainerStyle={styles.scrollViewContent}
-            keyboardShouldPersistTaps="handled"
-          >
-            <View style={styles.content}>
-              <Image
-                source={require("../assets/logo.png")}
-                style={styles.logo}
+          <View style={styles.content}>
+            <Image source={require("../assets/logo.png")} style={styles.logo} />
+            <View style={styles.loginContainer}>
+              <Text style={styles.welcomeText}>Welcome to Belakoo</Text>
+
+              <Text className="pt-5 pl-2 font-semibold">
+                Enter your email ID
+              </Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your Email ID"
+                placeholderTextColor="#CCCCCC"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                keyboardType="email-address"
+                autoCapitalize="none"
               />
-              <View style={styles.loginContainer}>
-                <Text style={styles.welcomeText}>Welcome to Belakoo</Text>
-                <Text style={styles.instructionsText}>
-                  Please login with your registered Email-ID & Password to
-                  continue
+              <Text className="pt-5 pl-2 font-semibold">Password</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your password"
+                placeholderTextColor="#CCCCCC"
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+                secureTextEntry
+              />
+              <TouchableOpacity>
+                <Text style={styles.forgotPasswordText}>
+                  Forgot your password?
                 </Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter your Email ID"
-                  placeholderTextColor="#CCCCCC"
-                  value={email}
-                  onChangeText={(text) => setEmail(text)}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter your password"
-                  placeholderTextColor="#CCCCCC"
-                  value={password}
-                  onChangeText={(text) => setPassword(text)}
-                  secureTextEntry
-                />
-                <TouchableOpacity>
-                  <Text style={styles.forgotPasswordText}>
-                    Forgot your password?
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.loginButton}
-                  onPress={handleLogin}
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <ActivityIndicator color="#fff" />
-                  ) : (
-                    <Text style={styles.loginButtonText}>Log in</Text>
-                  )}
-                </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.loginButton}
+                onPress={handleLogin}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text style={styles.loginButtonText}>Log in</Text>
+                )}
+              </TouchableOpacity>
             </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </ImageBackground>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </CustomSafeAreaView>
   );
 };
@@ -182,7 +176,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   logo: {
-    width: 225,
+    width: 300,
     height: 120,
     resizeMode: "contain",
     position: "absolute",
@@ -192,20 +186,15 @@ const styles = StyleSheet.create({
   loginContainer: {
     width: "100%",
     padding: 20,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 10,
-    elevation: 5,
+    marginTop: 120,
   },
   welcomeText: {
     fontSize: 24,
     fontWeight: "600",
     marginBottom: 10,
     color: "#4E4949",
-    fontWeight: "700",
+    fontWeight: "400",
+    textAlign: "center",
   },
   instructionsText: {
     marginBottom: 20,
@@ -224,13 +213,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginBottom: 15,
     fontSize: 16,
+    marginTop: 15,
   },
   forgotPasswordText: {
     fontSize: 16,
     fontWeight: "400",
-    color: "#4E4949",
+    color: "#3CB1F5",
     marginBottom: 20,
-    textDecorationLine: "underline"
+    textDecorationLine: "underline",
   },
   loginButton: {
     backgroundColor: "#F56E00",

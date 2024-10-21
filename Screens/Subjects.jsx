@@ -3,6 +3,7 @@ import {
   View,
   StyleSheet,
   Image,
+  Text,
   ActivityIndicator,
   ImageBackground,
 } from "react-native";
@@ -47,7 +48,6 @@ const Subjects = () => {
         style={styles.background}
       >
         <View style={styles.content}>
-          <CustomHeader />
           {isLoading ? (
             <ActivityIndicator
               size="large"
@@ -56,10 +56,11 @@ const Subjects = () => {
             />
           ) : (
             <>
-              <TitleContainer
-                title="Choose your Subject"
-                subtitle="Choose your subject by turning the cube"
-              />
+              <View className="flex items-center justify-center bg-[#F56E00] py-5 mt-0">
+                <Text className="text-2xl font-bold text-white">
+                  Choose your Subject
+                </Text>
+              </View>
               <View style={styles.canvasContainer}>
                 {campusData && campusData.subjects && (
                   <Cube subjects={campusData.subjects} />
