@@ -15,6 +15,8 @@ import TitleContainer from "../Components/TitleContainer";
 import api from "../services/api";
 import Toast from "react-native-toast-message";
 
+import { Link } from "expo-router";
+
 const Grades = () => {
   const { subjectId, subjectName } = useLocalSearchParams();
 
@@ -23,6 +25,12 @@ const Grades = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [gradeTab, setGradeTab] = useState(false);
+  const [proficiencyTab, setProficiencyTab] = useState(false);
+
+  const [prof, setProf] = useState([]);
+  const [isprof, setIsProf] = useState(false);
+
+  const [selectGrade, setSelectGrade] = useState();
 
   useEffect(() => {
     fetchGrades();
@@ -44,8 +52,17 @@ const Grades = () => {
     }
   };
 
-  const fetchProf = async () => {
-    return;
+  const fetchProf = async (id, name) => {
+    try {
+      const response = await api.get(
+        `https://belakoo-backend.onrender.com/api/grades/${id}/`
+      );
+      setProf(response.data.proficiencies);
+      setIsProf(true);
+      setSelectGrade(name);
+    } catch (error) {
+      console.error("Error fetching Proficiency");
+    }
   };
 
   return (
@@ -73,7 +90,7 @@ const Grades = () => {
                 className="bg-white  w-64 h-16 flex items-center justify-center border border-white rounded-xl"
               >
                 <Text className="text-[#F56E00] font-semibold text-2xl">
-                  Select
+                  {!selectGrade ? "Select" : selectGrade}
                 </Text>
               </TouchableOpacity>
 
@@ -86,7 +103,7 @@ const Grades = () => {
                     <TouchableOpacity
                       key={grade.id}
                       className="bg-white border-b border-b-black/10 mb-2 w-64 h-16 flex items-center justify-center rounded-xl"
-                      onPress={fetchProf}
+                      onPress={() => fetchProf(grade.id, grade.name)}
                     >
                       <Text className="text-black font-semibold text-2xl">
                         {grade.name}
@@ -94,6 +111,48 @@ const Grades = () => {
                     </TouchableOpacity>
                   ))}
                 </ScrollView>
+              )}
+              {isprof && (
+                <View>
+                  <View className="flex items-center justify-center bg-[#F56E00] py-5 mt-5 w-screen">
+                    <Text className="text-2xl font-bold text-white">
+                      Select the Proficiency
+                    </Text>
+                  </View>
+                  <View className="flex items-center justify-center p-5">
+                    <TouchableOpacity
+                      onPress={() => setProficiencyTab(!proficiencyTab)}
+                      className="bg-white  w-64 h-16 flex items-center justify-center border border-white rounded-xl"
+                    >
+                      <Text className="text-[#F56E00] font-semibold text-2xl">
+                        Select
+                      </Text>
+                    </TouchableOpacity>
+                    {proficiencyTab && (
+                      <View className="mt-5">
+                        {prof.map((item, index) => (
+                          <TouchableOpacity
+                            key={item.id}
+                            className="bg-white border-b border-b-black/10 mb-2 w-64 h-16 flex items-center justify-center rounded-xl"
+                            onPress={() =>
+                              router.push({
+                                pathname: "/chapters",
+                                params: {
+                                  proficiencyId: item.id,
+                                  proficiencyName: item.name,
+                                },
+                              })
+                            }
+                          >
+                            <Text className="text-black font-semibold text-2xl">
+                              {item.name}
+                            </Text>
+                          </TouchableOpacity>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                </View>
               )}
             </ScrollView>
           )}
