@@ -22,6 +22,8 @@ const Grades = () => {
   const [grades, setGrades] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [gradeTab, setGradeTab] = useState(false);
+
   useEffect(() => {
     fetchGrades();
   }, []);
@@ -42,6 +44,10 @@ const Grades = () => {
     }
   };
 
+  const fetchProf = async () => {
+    return;
+  };
+
   return (
     <CustomSafeAreaView>
       <ImageBackground
@@ -51,7 +57,7 @@ const Grades = () => {
         <View style={styles.content}>
           <View className="flex items-center justify-center bg-[#F56E00] py-5 mt-0">
             <Text className="text-2xl font-bold text-white">
-              {subjectName.toUpperCase()}
+              Select the Grade
             </Text>
           </View>
           {isLoading ? (
@@ -62,20 +68,33 @@ const Grades = () => {
             />
           ) : (
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
-              {grades.map((grade) => (
-                <TouchableOpacity
-                  key={grade.id}
-                  style={styles.gradeCard}
-                  onPress={() =>
-                    router.push({
-                      pathname: "/chapters",
-                      params: { gradeId: grade.id, gradeName: grade.name },
-                    })
-                  }
+              <TouchableOpacity
+                onPress={() => setGradeTab(!gradeTab)}
+                className="bg-white  w-64 h-16 flex items-center justify-center border border-white rounded-xl"
+              >
+                <Text className="text-[#F56E00] font-semibold text-2xl">
+                  Select
+                </Text>
+              </TouchableOpacity>
+
+              {gradeTab && (
+                <ScrollView
+                  className="bg-white border mt-5 rounded-lg border-white h-36"
+                  showsVerticalScrollIndicator={false}
                 >
-                  <Text style={styles.gradeName}>{grade.name}</Text>
-                </TouchableOpacity>
-              ))}
+                  {grades.map((grade) => (
+                    <TouchableOpacity
+                      key={grade.id}
+                      className="bg-white border-b border-b-black/10 mb-2 w-64 h-16 flex items-center justify-center rounded-xl"
+                      onPress={fetchProf}
+                    >
+                      <Text className="text-black font-semibold text-2xl">
+                        {grade.name}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              )}
             </ScrollView>
           )}
         </View>
@@ -100,10 +119,8 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     alignItems: "center",
     paddingVertical: 20,
-    flexWrap: "wrap",
-    justifyContent: "space-around",
+    justifyContent: "center",
     paddingHorizontal: 10,
-    flexDirection: "row",
   },
   gradeCard: {
     flexDirection: "row",

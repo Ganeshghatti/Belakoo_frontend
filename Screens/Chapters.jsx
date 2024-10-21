@@ -51,7 +51,7 @@ const Chapters = () => {
   return (
     <CustomSafeAreaView>
       <ImageBackground
-        source={require("../assets/Chapters/bg.png")}
+        source={require("../assets/Content/bg2.png")}
         style={styles.background}
       />
       <View style={styles.content}>
