@@ -15,6 +15,8 @@ import Toast from "react-native-toast-message";
 import api from "../services/api";
 import { useLocalSearchParams } from "expo-router";
 
+import { ActivityIndicator } from "react-native";
+
 const Acquire = () => {
   const router = useRouter();
 
@@ -56,49 +58,65 @@ const Acquire = () => {
           <View className="flex items-center justify-center  bg-[#F56E00] py-5 mt-0">
             <Text className="text-2xl font-bold text-white">Acquire</Text>
           </View>
-
-          <ScrollView className="space-y-3 mt-4 h-[89%]">
-            {acquireData?.ENGAGE && (
-              <View className="space-y-4 mx-4">
-                <Text className="text-[#F56E00] font-bold text-xl">Engage</Text>
-                <Text className="text-black font-medium text-lg">
-                  {acquireData?.ENGAGE}
+          {isLoading ? (
+            <ActivityIndicator
+              size="large"
+              color="#740000"
+              style={styles.loader}
+            />
+          ) : (
+            <ScrollView className="space-y-3 mt-4 h-[89%]">
+              {acquireData?.ENGAGE && (
+                <View className="space-y-4 mx-4">
+                  <Text className="text-[#F56E00] font-bold text-xl">
+                    Engage
+                  </Text>
+                  <Text className="text-black font-medium text-lg">
+                    {acquireData?.ENGAGE}
+                  </Text>
+                </View>
+              )}
+              {acquireData?.INFORM && (
+                <View className="space-y-4 mx-4">
+                  <Text className="text-[#F56E00] font-bold text-xl">
+                    Inform
+                  </Text>
+                  <Text className="text-black font-medium text-lg">
+                    {acquireData?.INFORM}
+                  </Text>
+                </View>
+              )}
+              {acquireData?.TEACH && (
+                <View className="space-y-4 mx-4">
+                  <Text className="text-[#F56E00] font-bold text-xl">
+                    Teach
+                  </Text>
+                  <Text className="text-black font-medium text-lg">
+                    {acquireData?.TEACH}
+                  </Text>
+                </View>
+              )}
+              <TouchableOpacity
+                onPress={() =>
+                  router.push({
+                    pathname: "/apply",
+                    params: {
+                      lessonCode: lessonCode,
+                      lessonName: lessonName,
+                      activate: true,
+                      acquire: true,
+                      apply: true,
+                    },
+                  })
+                }
+                className="bg-[#F56E00] py-4  mx-3 flex border-[#F56E00] items-center justify-center border rounded-3xl"
+              >
+                <Text className="text-white font-bold text-xl">
+                  Move to Apply
                 </Text>
-              </View>
-            )}
-            {acquireData?.INFORM && (
-              <View className="space-y-4 mx-4">
-                <Text className="text-[#F56E00] font-bold text-xl">Inform</Text>
-                <Text className="text-black font-medium text-lg">
-                  {acquireData?.INFORM}
-                </Text>
-              </View>
-            )}
-            {acquireData?.TEACH && (
-              <View className="space-y-4 mx-4">
-                <Text className="text-[#F56E00] font-bold text-xl">Teach</Text>
-                <Text className="text-black font-medium text-lg">
-                  {acquireData?.TEACH}
-                </Text>
-              </View>
-            )}
-            <TouchableOpacity
-              onPress={() =>
-                router.push({
-                  pathname: "/apply",
-                  params: {
-                    lessonCode: lessonCode,
-                    lessonName: lessonName,
-                  },
-                })
-              }
-              className="bg-[#F56E00] py-4  mx-3 flex border-[#F56E00] items-center justify-center border rounded-3xl"
-            >
-              <Text className="text-white font-bold text-xl">
-                Move to Apply
-              </Text>
-            </TouchableOpacity>
-          </ScrollView>
+              </TouchableOpacity>
+            </ScrollView>
+          )}
 
           <View></View>
         </ImageBackground>

@@ -83,6 +83,8 @@ const Activate = () => {
                       params: {
                         lessonCode: lessonCode,
                         lessonName: lessonName,
+                        activate: "true",
+                        acquire: true,
                       },
                     })
                   }
