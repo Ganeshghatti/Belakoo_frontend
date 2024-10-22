@@ -18,7 +18,7 @@ import Toast from "react-native-toast-message";
 import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 
 const Chapters = () => {
-  const { gradeId, gradeName } = useLocalSearchParams();
+  const { proficiencyId, proficiencyName } = useLocalSearchParams();
   const router = useRouter();
   const [chapters, setChapters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,13 +29,11 @@ const Chapters = () => {
 
   const fetchGradeDetails = async () => {
     try {
-      const response = await api.get(`/api/grades/${gradeId}/`);
-      console.log(
-        "chapters",
-        response.data.chapters,
-        response.data.chapters[0].lessons
+      const response = await api.get(
+        `https://belakoo-backend.onrender.com/api/proficiencies/${proficiencyId}/lessons/`
       );
-      setChapters(response.data.chapters);
+      console.log(response.data);
+      setChapters(response.data.lessons);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching grade details:", error);
@@ -65,35 +63,22 @@ const Chapters = () => {
             style={styles.loader}
           />
         ) : (
-          <ScrollView contentContainerStyle={styles.chapterContainer}>
-            {chapters.map((chapter) => (
-              <View key={chapter.id} style={styles.chapterCard}>
-                <Text style={styles.chapterTitle}>{chapter.name}</Text>
-                <View style={styles.lessonContainer}>
-                  {chapter.lessons.map((lesson) => (
-                    <Link
-                      key={lesson.id}
-                      href={{
-                        pathname: "/content",
-                        params: {
-                          lessonId: lesson.id,
-                          lessonCode: lesson.lesson_code,
-                        },
-                      }}
-                      asChild
-                    >
-                      <TouchableOpacity style={styles.lessonButton}>
-                        <View style={styles.lessonContent}>
-                          {lesson.is_done ? <DoneIcon /> : <NotDoneIcon />}
-                          <Text style={styles.lessonText}>{lesson.name}</Text>
-                        </View>
-                      </TouchableOpacity>
-                    </Link>
-                  ))}
+          <View className="flex items-center justify-center m-5">
+            {chapters.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() =>
+                  router.push({
+                    pathname: "/lesson",
+                  })
+                }
+              >
+                <View className="bg-white p-10 m-5 inline" key={index}>
+                  <Text>{item.name}</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
             ))}
-          </ScrollView>
+          </View>
         )}
       </View>
     </CustomSafeAreaView>
