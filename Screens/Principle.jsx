@@ -3,12 +3,12 @@ import React from "react";
 import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 import { useRouter } from "expo-router";
 
+import { useLocalSearchParams } from "expo-router";
+
 const Principle = () => {
   const router = useRouter();
 
-  const handleRedirect = async () => {
-    router.replace("/activate");
-  };
+  const { lessonCode, lessonName } = useLocalSearchParams();
 
   return (
     <CustomSafeAreaView>
@@ -36,10 +36,18 @@ const Principle = () => {
           </View>
         </View>
         <TouchableOpacity
-          onPress={handleRedirect}
+          onPress={() =>
+            router.push({
+              pathname: "/activate",
+              params: {
+                lessonCode: lessonCode,
+                lessonName: lessonName,
+              },
+            })
+          }
           className="bg-[#ACACAC] py-4 mt-36 mx-10 flex border-gray-400 items-center justify-center border rounded-3xl"
         >
-          <Text className="text-white font-bold text-xl">Mark as Done</Text>
+          <Text className="text-white font-bold text-xl">Next</Text>
         </TouchableOpacity>
       </View>
     </CustomSafeAreaView>

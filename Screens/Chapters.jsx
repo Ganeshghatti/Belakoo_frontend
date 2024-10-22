@@ -70,6 +70,10 @@ const Chapters = () => {
                 onPress={() =>
                   router.push({
                     pathname: "/lesson",
+                    params: {
+                      lessonCode: item.lesson_code,
+                      lessonName: item.name,
+                    },
                   })
                 }
               >

@@ -9,12 +9,43 @@ import React from "react";
 import { useRouter } from "expo-router";
 import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 import { ImageBackground } from "react-native";
+import { useState, useEffect } from "react";
+import Toast from "react-native-toast-message";
+
+import { ActivityIndicator } from "react-native";
+
+import api from "../services/api";
+import { useLocalSearchParams } from "expo-router";
 
 const Activate = () => {
   const router = useRouter();
 
-  const handleRedirect = async () => {
-    router.replace("/aquire");
+  const [activateData, setActivateData] = useState();
+  const { lessonCode, lessonName } = useLocalSearchParams();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchLessonDetails();
+  }, []);
+
+  const fetchLessonDetails = async () => {
+    try {
+      const response = await api.get(
+        `https://belakoo-backend.onrender.com/api/lessons/${lessonCode}/`
+      );
+      console.log(response.data);
+      setActivateData(response.data.activate);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching lesson details:", error);
+      console.log(lessonCode);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Failed to load chapters. Please try again.",
+      });
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -28,45 +59,42 @@ const Activate = () => {
             <Text className="text-2xl font-bold text-white">Activate</Text>
           </View>
 
-          <ScrollView className="space-y-3 ">
-            <View className="space-y-4 mx-4 mt-4">
-              <Text className="text-[#F56E00] font-bold text-xl">1. Hook</Text>
-              <Text className="text-black font-medium text-lg">
-                Begin the lesson by asking students to share examples of when
-                they put things together in their daily lives, such as putting
-                two puzzle pieces together or combining ingredients to make a
-                recipe. Emphasize the idea that addition is like putting things
-                together.
-              </Text>
-            </View>
-            <View className="space-y-4 mx-4">
-              <Text className="text-[#F56E00] font-bold text-xl">
-                2. Assess
-              </Text>
-              <Text className="text-black font-medium text-lg">
-                Ask a few students to explain how they put things together in
-                their examples. This will help assess their understanding of the
-                concept of addition as putting together
-              </Text>
-            </View>
-            <View className="space-y-4 mx-4">
-              <Text className="text-[#F56E00] font-bold text-xl">
-                3. Inform
-              </Text>
-              <Text className="text-black font-medium text-lg">
-                Tell students that they will be able to understand the concept
-                of putting together numbers
-              </Text>
-            </View>
-          </ScrollView>
-          <View>
-            <TouchableOpacity
-              onPress={handleRedirect}
-              className="bg-[#F56E00] py-4 mt-20 mx-3  flex border-[#F56E00] items-center justify-center border rounded-3xl"
-            >
-              <Text className="text-white font-bold text-xl">Mark as Done</Text>
-            </TouchableOpacity>
-          </View>
+          {isLoading ? (
+            <ActivityIndicator
+              size="large"
+              color="#740000"
+              style={styles.loader}
+            />
+          ) : (
+            <ScrollView className="space-y-3 mt-4 ">
+              {activateData?.HOOK && (
+                <View className="space-y-4 mx-4">
+                  <Text className="text-[#F56E00] font-bold text-xl">Hook</Text>
+                  <Text className="text-black font-medium text-lg">
+                    {activateData?.HOOK}
+                  </Text>
+                </View>
+              )}
+              <View>
+                <TouchableOpacity
+                  onPress={() =>
+                    router.push({
+                      pathname: "/acquire",
+                      params: {
+                        lessonCode: lessonCode,
+                        lessonName: lessonName,
+                      },
+                    })
+                  }
+                  className="bg-[#F56E00] py-4 mt-20 mx-3  flex border-[#F56E00] items-center justify-center border rounded-3xl"
+                >
+                  <Text className="text-white font-bold text-xl">
+                    Move to Acquire
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          )}
         </ImageBackground>
       </View>
     </CustomSafeAreaView>
