@@ -9,10 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import { Link, useRouter, useLocalSearchParams } from "expo-router";
-import CustomHeader from "../Components/CustomHeader";
-import TitleContainer from "../Components/TitleContainer";
-import DoneIcon from "../assets/icons/Done";
-import NotDoneIcon from "../assets/icons/NotDone";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import api from "../services/api";
 import Toast from "react-native-toast-message";
 import CustomSafeAreaView from "../Components/CustomSafeAreaView";
@@ -48,12 +45,17 @@ const Chapters = () => {
 
   return (
     <CustomSafeAreaView>
-      <ImageBackground
-        source={require("../assets/Content/bg2.png")}
-        style={styles.background}
-      />
-      <View style={styles.content}>
-        <View className="flex items-center justify-center bg-[#F56E00] py-5 mt-0">
+      <ImageBackground source={require("../assets/Content/bg2.png")} />
+      <View className="bg-[#F56E00]/10  h-screen">
+        <View className="flex relative items-center justify-center flex-row bg-[#F56E00] py-5 mt-0">
+          <TouchableOpacity className="absolute left-0 ml-5">
+            <AntDesign
+              name="back"
+              size={26}
+              color="white"
+              onPress={() => router.back()}
+            />
+          </TouchableOpacity>
           <Text className="text-2xl font-bold text-white">Select Chapters</Text>
         </View>
         {isLoading ? (
@@ -63,10 +65,11 @@ const Chapters = () => {
             style={styles.loader}
           />
         ) : (
-          <View className="flex items-center justify-center m-5">
+          <View className="flex  flex-row flex-wrap items-center justify-center">
             {chapters.map((item, index) => (
               <TouchableOpacity
                 key={index}
+                className="bg-white h-20 flex items-center justify-center  space-y-3 border border-white rounded-lg m-5 w-20"
                 onPress={() =>
                   router.push({
                     pathname: "/lesson",
@@ -77,9 +80,11 @@ const Chapters = () => {
                   })
                 }
               >
-                <View className="bg-white p-10 m-5 inline" key={index}>
-                  <Text>{item.name}</Text>
-                </View>
+                {item.is_done && (
+                  <AntDesign name="checkcircle" size={20} color="green" />
+                )}
+
+                <Text className="font-semibold text-md">{item.name}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -89,72 +94,6 @@ const Chapters = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#FDDEBC",
-  },
-  background: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  content: {
-    flex: 1,
-    zIndex: 1,
-  },
-  loader: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  chapterContainer: {
-    marginTop: 25,
-    width: "90%",
-    height: "auto",
-    margin: "auto",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    rowGap: 25,
-    backgroundColor: "white",
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-  },
-  chapterCard: {
-    display: "flex",
-    width: "30%",
-    alignItems: "center",
-  },
-  chapterTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    marginBottom: 6,
-    color: "#740000",
-  },
-  lessonContainer: {
-    display: "flex",
-  },
-  lessonButton: {
-    display: "flex",
-  },
-  lessonContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 1,
-  },
-  lessonText: {
-    color: "#740000",
-    fontWeight: "400",
-    fontSize: 12,
-    marginLeft: 2,
-  },
-});
+const styles = StyleSheet.create({});
 
 export default Chapters;

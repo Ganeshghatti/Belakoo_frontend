@@ -10,6 +10,8 @@ import { useEffect } from "react";
 
 import { Text } from "react-native";
 
+import { AntDesign } from "@expo/vector-icons";
+
 import { ActivityIndicator } from "react-native";
 
 import CustomSafeAreaView from "../Components/CustomSafeAreaView";
@@ -53,7 +55,15 @@ const Lesson = () => {
   return (
     <CustomSafeAreaView>
       <View style={styles.content} className="">
-        <View className="flex items-center justify-center bg-[#F56E00] py-5 mt-0">
+        <View className="flex relative items-center justify-center flex-row bg-[#F56E00] py-5 mt-0">
+          <TouchableOpacity className="absolute left-0 ml-5">
+            <AntDesign
+              name="back"
+              size={26}
+              color="white"
+              onPress={() => router.back()}
+            />
+          </TouchableOpacity>
           <Text className="text-2xl font-bold text-white">
             Belakube Lesson Plan
           </Text>
