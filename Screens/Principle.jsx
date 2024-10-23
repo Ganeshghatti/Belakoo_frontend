@@ -5,6 +5,8 @@ import { useRouter } from "expo-router";
 
 import { useState } from "react";
 
+import { AntDesign } from "@expo/vector-icons";
+
 import { useLocalSearchParams } from "expo-router";
 import axios from "axios";
 
@@ -89,7 +91,15 @@ const Principle = () => {
   return (
     <CustomSafeAreaView>
       <View style={styles.content} className="">
-        <View className="flex items-center justify-center  bg-[#F56E00] py-5 mt-0">
+        <View className="flex relative items-center justify-center flex-row bg-[#F56E00] py-5 mt-0">
+          <TouchableOpacity className="absolute left-0 ml-5">
+            <AntDesign
+              name="back"
+              size={26}
+              color="white"
+              onPress={() => router.back()}
+            />
+          </TouchableOpacity>
           <Text className="text-2xl font-bold text-white">
             Guiding Principles
           </Text>

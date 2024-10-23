@@ -12,6 +12,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 import CustomHeader from "../Components/CustomHeader";
 import TitleContainer from "../Components/TitleContainer";
+import { AntDesign } from "@expo/vector-icons";
 import api from "../services/api";
 import Toast from "react-native-toast-message";
 
@@ -72,7 +73,15 @@ const Grades = () => {
         style={styles.background}
       >
         <View style={styles.content}>
-          <View className="flex items-center justify-center bg-[#F56E00] py-5 mt-0">
+          <View className="flex relative items-center justify-center flex-row bg-[#F56E00] py-5 mt-0">
+            <TouchableOpacity className="absolute left-0 ml-5">
+              <AntDesign
+                name="back"
+                size={26}
+                color="white"
+                onPress={() => router.back()}
+              />
+            </TouchableOpacity>
             <Text className="text-2xl font-bold text-white">
               Select the Grade
             </Text>

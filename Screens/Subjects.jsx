@@ -9,16 +9,20 @@ import {
 } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import Cube from "../assets/3D/cube";
+import { TouchableOpacity } from "react-native";
 import TitleContainer from "../Components/TitleContainer";
 import CustomHeader from "../Components/CustomHeader";
+import { AntDesign } from "@expo/vector-icons";
 import api from "../services/api";
 import Toast from "react-native-toast-message";
+import { useRouter } from "expo-router";
 import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 
 const Subjects = () => {
   const { campusId } = useLocalSearchParams();
   const [campusData, setCampusData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     fetchCampusDetails();
@@ -56,9 +60,17 @@ const Subjects = () => {
             />
           ) : (
             <>
-              <View className="flex items-center justify-center bg-[#F56E00] py-5 mt-0">
+              <View className="flex relative items-center justify-center flex-row bg-[#F56E00] py-5 mt-0">
+                <TouchableOpacity className="absolute left-0 ml-5">
+                  <AntDesign
+                    name="back"
+                    size={26}
+                    color="white"
+                    onPress={() => router.back()}
+                  />
+                </TouchableOpacity>
                 <Text className="text-2xl font-bold text-white">
-                  Choose your Subject
+                  Choose your Subjects
                 </Text>
               </View>
               <View style={styles.canvasContainer}>

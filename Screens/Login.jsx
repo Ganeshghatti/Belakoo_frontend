@@ -180,13 +180,13 @@ const styles = StyleSheet.create({
     height: 120,
     resizeMode: "contain",
     position: "absolute",
-    top: 25,
+    top: 0,
     margin: "auto",
   },
   loginContainer: {
     width: "100%",
     padding: 20,
-    marginTop: 120,
+    marginTop: 80,
   },
   welcomeText: {
     fontSize: 24,
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginBottom: 15,
     fontSize: 16,
-    marginTop: 15,
+    marginTop: 5,
   },
   forgotPasswordText: {
     fontSize: 16,
@@ -229,6 +229,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 24,
   },
   loginButtonText: {
     color: "#fff",

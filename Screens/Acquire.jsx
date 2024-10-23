@@ -12,6 +12,8 @@ import { ImageBackground } from "react-native";
 import { useState, useEffect } from "react";
 import Toast from "react-native-toast-message";
 
+import { AntDesign } from "@expo/vector-icons";
+
 import api from "../services/api";
 import { useLocalSearchParams } from "expo-router";
 
@@ -55,7 +57,15 @@ const Acquire = () => {
           source={require("../assets/Content/bg2.png")}
           style={styles.background}
         >
-          <View className="flex items-center justify-center  bg-[#F56E00] py-5 mt-0">
+          <View className="flex relative items-center justify-center flex-row bg-[#F56E00] py-5 mt-0">
+            <TouchableOpacity className="absolute left-0 ml-5">
+              <AntDesign
+                name="back"
+                size={26}
+                color="white"
+                onPress={() => router.back()}
+              />
+            </TouchableOpacity>
             <Text className="text-2xl font-bold text-white">Acquire</Text>
           </View>
           {isLoading ? (
