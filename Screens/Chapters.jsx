@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import { Link, useRouter, useLocalSearchParams } from "expo-router";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import CustomHeader from "../Components/CustomHeader";
 import TitleContainer from "../Components/TitleContainer";
 import DoneIcon from "../assets/icons/Done";
@@ -77,7 +78,14 @@ const Chapters = () => {
                   })
                 }
               >
-                <View className="bg-white p-10 m-5 inline" key={index}>
+                <View
+                  className="bg-white p-10 m-5  flex items-center justify-center"
+                  key={index}
+                >
+                  {item.is_done && (
+                    <AntDesign name="checkcircle" size={24} color="green" />
+                  )}
+
                   <Text>{item.name}</Text>
                 </View>
               </TouchableOpacity>
