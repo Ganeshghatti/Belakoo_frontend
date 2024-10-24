@@ -3,6 +3,7 @@ import {
   View,
   StyleSheet,
   ImageBackground,
+  Image,
   TouchableOpacity,
 } from "react-native";
 
@@ -56,13 +57,9 @@ const Lesson = () => {
     <CustomSafeAreaView>
       <View style={styles.content} className="">
         <View className="flex relative items-center justify-center flex-row bg-[#F56E00] py-5 mt-0">
-          <TouchableOpacity className="absolute left-0 ml-5">
-            <AntDesign
-              name="back"
-              size={26}
-              color="white"
-              onPress={() => router.back()}
-            />
+        <TouchableOpacity className="absolute left-0 ml-5" onPress={() => router.back()}>
+          <Image source={require("../assets/arrow.png")}  className="w-9 h-7"/>
+     
           </TouchableOpacity>
           <Text className="text-2xl font-bold text-white">
             Belakube Lesson Plan
