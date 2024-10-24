@@ -14,11 +14,16 @@ import api from "../services/api";
 import Toast from "react-native-toast-message";
 import CustomSafeAreaView from "../Components/CustomSafeAreaView";
 
+import { useContext } from "react";
+import { MyContext } from "../context/context";
+
 const Chapters = () => {
   const { proficiencyId, proficiencyName } = useLocalSearchParams();
   const router = useRouter();
   const [chapters, setChapters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const {profId, setProfId} = useContext(MyContext)
 
   useEffect(() => {
     fetchGradeDetails();
@@ -29,9 +34,9 @@ const Chapters = () => {
       const response = await api.get(
         `https://belakoo-backend.onrender.com/api/proficiencies/${proficiencyId}/lessons/`
       );
-      console.log(response.data);
       setChapters(response.data.lessons);
       setIsLoading(false);
+      setProfId(proficiencyId)
     } catch (error) {
       console.error("Error fetching grade details:", error);
       Toast.show({

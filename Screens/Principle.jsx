@@ -8,13 +8,17 @@ import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 
 import { useLocalSearchParams } from "expo-router";
+import { useContext } from "react";
 import axios from "axios";
+import { MyContext } from "../context/context";
 
 const Principle = () => {
   const router = useRouter();
 
   const { lessonCode, lessonName, activate, apply, assess, acquire } =
     useLocalSearchParams();
+
+    const {profId} = useContext(MyContext)
 
   const [isActivate] = useState(activate);
   const [isAcquire] = useState(acquire);
@@ -25,13 +29,13 @@ const Principle = () => {
     const response = axios.post(
       `https://belakoo-backend.onrender.com/api/lessons/${lessonCode}/mark-done/`
     );
-    console.log(response);
     router.push({
-      pathname: `/lesson`,
+      pathname: `/chapters`,
       params: {
         lessonCode: lessonCode,
         lessonName: lessonName,
         activate: true,
+        proficiencyId : profId
       },
     });
   };
@@ -77,12 +81,14 @@ const Principle = () => {
 
   const handleAssess = () => {
     if (isAssess) {
+      console.log(profId)
       router.push({
         pathname: `/assess`,
         params: {
           lessonCode: lessonCode,
           lessonName: lessonName,
           activate: true,
+          
         },
       });
     }

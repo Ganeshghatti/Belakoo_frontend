@@ -4,6 +4,8 @@ import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import { Text } from "react-native";
 
+import { MyProvider } from "../context/context";
+
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -31,5 +33,9 @@ export default function RootLayout() {
   Text.defaultProps = Text.defaultProps || {};
   Text.defaultProps.style = { fontFamily: "gothambold" };
 
-  return <Slot />;
+  return (
+      <MyProvider>
+        <Slot />
+      </MyProvider>
+  );
 }
